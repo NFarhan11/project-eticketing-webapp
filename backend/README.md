@@ -1,61 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Event Booking System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+This is a personal project aimed at building a simplified Event Booking System. It allows event organizers to create and manage events, and customers to view available events, book tickets, and manage their bookings. The system is designed with a clear separation of concerns, utilizing a modern JavaScript framework for the frontend and a robust PHP framework for the backend API.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Event Organizer
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Create Events:** Organizers can create new events by providing details such as name, date, venue, total available tickets, and ticket price.
 
-## Learning Laravel
+### Customer
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **View Available Events:** Customers can browse a list of upcoming events. The system implements special logic for VIP users, allowing them early access to view newly created events within the first 24 hours.
+-   **Book Tickets:** Customers can book tickets for an event, with validation checks for ticket availability and event status.
+-   **View Booking Details:** Customers can view the specifics of their confirmed bookings, including event information and total cost.
+-   **Cancel Booking:** Customers have the option to cancel their existing bookings, which refunds the tickets and makes them available to other users.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Technologies Used
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend (API)
 
-## Laravel Sponsors
+-   **Laravel**: A PHP web application framework with expressive, elegant syntax. It provides a robust foundation for the API, handling routing, database interactions (Eloquent ORM), validation, and more.
+-   **PostgresSQL**: A powerful, open source object-relational database system.
+-   (Optional: Add any other backend tools/libraries you plan to use, e.g., for authentication, testing)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Frontend (Client)
 
-### Premium Partners
+-   **Nuxt.js**: An open-source framework that makes web development simple and powerful. It's built on Vue.js.
+-   (Optional: Add any other frontend tools/libraries you plan to use, e.g., Vuex for state management, Axios for HTTP requests, a UI library like Vuetify/Tailwind CSS)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Project Structure
 
-## Contributing
+The project is split into two main parts:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1.  **`backend/`**: Contains the Laravel API application. This handles all business logic, database interactions, and exposes the RESTful API endpoints.
+2.  **`frontend/`**: Contains the Nuxt.js client application. This consumes the backend API to provide a rich user interface.
 
-## Code of Conduct
+## Setup and Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Prerequisites
 
-## Security Vulnerabilities
+Before you begin, ensure you have the following installed:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **PHP**: Version 8.3 or higher (for Laravel)
+-   **Composer**: PHP Dependency Manager
+-   **Node.js**: Version 22.11.0 or higher (for Nuxt.js)
+-   **npm** or **Yarn**: Node.js Package Manager
+-   **A Database System**: (e.g., MySQL, PostgreSQL, or SQLite if using file-based)
 
-## License
+### Backend Setup (Laravel)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repository-url>
+    cd event-booking-system/backend
+    ```
+2.  **Install PHP dependencies:**
+    ```bash
+    composer install
+    ```
+3.  **Copy the environment file:**
+    ```bash
+    cp .env.example .env
+    ```
+4.  **Generate application key:**
+    ```bash
+    php artisan key:generate
+    ```
+5.  **Configure your database:**
+    Open the `.env` file and update the `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` variables to match your database setup.
+6.  **Run database migrations:**
+    ```bash
+    php artisan migrate
+    ```
+7.  **Serve the Laravel application:**
+    ```bash
+    php artisan serve
+    ```
+    The API will typically be available at `http://127.0.0.1:8000/api`.
+
+### Frontend Setup (Nuxt.js)
+
+1.  **Navigate to the frontend directory:**
+    ```bash
+    cd ../frontend # If you are in the backend directory, or
+    # cd event-booking-system/frontend
+    ```
+2.  **Install Node.js dependencies:**
+    ```bash
+    npm install # or yarn install
+    ```
+3.  **Configure API base URL:**
+    You might need to configure the base URL for your Laravel API in your Nuxt.js project's `.env` file or `nuxt.config.js` (e.g., `NUXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api`).
+4.  **Run the Nuxt.js development server:**
+    ```bash
+    npm run dev # or yarn dev
+    ```
+    The frontend application will typically be available at `http://localhost:3000`.
+
+## API Endpoints
+
+Here's a summary of the API endpoints will be implement in the backend:
+
+### Events
+
+-   `POST /api/events`: Create a new event.
+    -   **Body:** `{name, date, venue, totalTickets, ticketPrice}`
+-   `GET /api/events`: Retrieve a list of available events.
+    -   **Response:** `{name, date, venue, availableTicket}`
+
+### Bookings
+
+-   `POST /api/bookings`: Book tickets for an event.
+    -   **Body:** `{eventId, numOfTickets}`
+-   `GET /api/bookings`: View details of a specific booking (authentication required).
+    -   **Response:** `{event, numOfTickets, totalPrice}`
+-   `DELETE /api/bookings/{id}`: Cancel a ticket booking.
+
+## Database Schema (ER Diagram)
+
+This project uses the following database schema:
+
+-   `TBA`
