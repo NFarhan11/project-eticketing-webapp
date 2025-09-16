@@ -1,24 +1,33 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Navigation Bar -->
-    <UHeader>
-      <template #logo>
-        <UIcon name="i-heroicons-ticket" class="w-8 h-8 text-primary-500" />
-        <span class="text-xl font-bold text-gray-900 ml-2">E-Ticketing</span>
-      </template>
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <UIcon name="i-heroicons-ticket" class="w-8 h-8 text-blue-600" />
+            <span class="text-xl font-bold text-gray-900 ml-2">E-Ticketing</span>
+          </div>
 
-      <template #right>
-        <UButton to="/events" variant="ghost" color="neutral" icon="i-heroicons-calendar-days">
-          Events
-        </UButton>
-        <UButton to="/bookings" variant="ghost" color="neutral" icon="i-heroicons-ticket">
-          My Bookings
-        </UButton>
-        <UButton to="/create-event" variant="ghost" color="neutral" icon="i-heroicons-plus-circle">
-          Create Event
-        </UButton>
-      </template>
-    </UHeader>
+          <!-- Navigation Links -->
+          <div class="flex items-center space-x-4">
+            <UButton to="/events" variant="ghost" color="neutral" icon="i-heroicons-calendar-days">
+              Events
+            </UButton>
+            <UButton to="/bookings" variant="ghost" color="neutral" icon="i-heroicons-ticket">
+              My Bookings
+            </UButton>
+            <UButton to="/create-event" variant="ghost" color="neutral" icon="i-heroicons-plus-circle">
+              Create Event
+            </UButton>
+            <UButton to="/admin" variant="solid" color="primary" icon="i-heroicons-cog-6-tooth">
+              Admin Panel
+            </UButton>
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
