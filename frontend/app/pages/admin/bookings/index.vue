@@ -78,11 +78,12 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2">
-                  <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-eye" @click="viewBooking(booking)">
+                  <UButton size="xs" variant="ghost" icon="i-heroicons-eye" @click="viewBooking(booking)"
+                    class="text-blue-500 hover:bg-blue-100">
                     View
                   </UButton>
-                  <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-x-mark"
-                    @click="cancelBooking(booking.id)">
+                  <UButton size="xs" variant="ghost" icon="i-heroicons-x-mark" @click="cancelBooking(booking.id)"
+                    class="text-red-500 hover:bg-red-100">
                     Cancel
                   </UButton>
                 </div>
@@ -99,10 +100,10 @@
             Showing {{ filteredBookings.length }} of {{ bookings.length }} bookings
           </div>
           <div class="flex space-x-2">
-            <UButton size="sm" variant="ghost" color="gray" disabled>
+            <UButton size="sm" variant="ghost" class="text-gray-500" disabled>
               Previous
             </UButton>
-            <UButton size="sm" variant="ghost" color="gray" disabled>
+            <UButton size="sm" variant="ghost" class="text-gray-500" disabled>
               Next
             </UButton>
           </div>

@@ -72,7 +72,7 @@
               <p class="text-xs text-gray-500">tickets left</p>
             </div>
           </div>
-          <UButton to="/admin/events" variant="ghost" color="blue" class="w-full">
+          <UButton to="/admin/events" variant="ghost" class="w-full bg-blue-500 hover:bg-blue-700 text-white">
             View All Events
           </UButton>
         </div>
@@ -95,7 +95,7 @@
               <p class="text-xs text-gray-500">{{ formatDate(booking.created_at) }}</p>
             </div>
           </div>
-          <UButton to="/admin/bookings" variant="ghost" color="blue" class="w-full">
+          <UButton to="/admin/bookings" variant="ghost" class="w-full bg-blue-500 hover:bg-blue-700 text-white">
             View All Bookings
           </UButton>
         </div>

@@ -64,7 +64,8 @@
                 <div class="text-sm text-gray-900">{{ user.email }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <UBadge :color="user.role === 'admin' ? 'red' : user.role === 'vip' ? 'purple' : 'gray'"
+                <UBadge
+                  :class="user.role === 'admin' ? 'bg-red-100 text-red-800' : user.role === 'vip' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'"
                   variant="subtle">
                   {{ user.role }}
                 </UBadge>
@@ -80,13 +81,16 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2">
-                  <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-eye" @click="viewUser(user)">
+                  <UButton size="xs" variant="ghost" class="bg-blue-50 text-blue-700 hover:bg-blue-100"
+                    icon="i-heroicons-eye" @click="viewUser(user)">
                     View
                   </UButton>
-                  <UButton size="xs" variant="ghost" color="purple" icon="i-heroicons-pencil" @click="editUser(user)">
+                  <UButton size="xs" variant="ghost" class="bg-purple-50 text-purple-700 hover:bg-purple-100"
+                    icon="i-heroicons-pencil" @click="editUser(user)">
                     Edit
                   </UButton>
-                  <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-trash" @click="deleteUser(user.id)">
+                  <UButton size="xs" variant="ghost" class="bg-red-50 text-red-700 hover:bg-red-100"
+                    icon="i-heroicons-trash" @click="deleteUser(user.id)">
                     Delete
                   </UButton>
                 </div>
@@ -103,10 +107,10 @@
             Showing {{ filteredUsers.length }} of {{ users.length }} users
           </div>
           <div class="flex space-x-2">
-            <UButton size="sm" variant="ghost" color="gray" disabled>
+            <UButton size="sm" variant="ghost" class="bg-gray-50 text-gray-700" disabled>
               Previous
             </UButton>
-            <UButton size="sm" variant="ghost" color="gray" disabled>
+            <UButton size="sm" variant="ghost" class="bg-gray-50 text-gray-700" disabled>
               Next
             </UButton>
           </div>
