@@ -3,7 +3,7 @@
     <div>
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Events Management</h1>
-        <UButton to="/admin/events/create" color="blue" icon="i-heroicons-plus">
+        <UButton to="/admin/events/create" color="warning" icon="i-heroicons-plus">
           Create New Event
         </UButton>
       </div>
@@ -62,11 +62,12 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex space-x-2">
-                    <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-pencil" @click="editEvent(event)">
+                    <UButton size="xs" variant="ghost" icon="i-heroicons-pencil" @click="editEvent(event)"
+                      class="text-blue-500 hover:bg-blue-100">
                       Edit
                     </UButton>
-                    <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-trash"
-                      @click="deleteEvent(event.id)">
+                    <UButton size="xs" variant="ghost" icon="i-heroicons-trash" @click="deleteEvent(event.id)"
+                      class="text-red-500 hover:bg-red-100">
                       Delete
                     </UButton>
                   </div>
