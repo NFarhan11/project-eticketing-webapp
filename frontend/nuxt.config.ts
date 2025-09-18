@@ -11,8 +11,11 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/css/main.css"],
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
+  },
+  colorMode: {
+    preference: "light", // default theme
+    fallback: "light", // fallback when system preference not found
+    classSuffix: "",
   },
 });

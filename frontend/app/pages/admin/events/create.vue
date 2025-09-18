@@ -1,59 +1,60 @@
 <template>
-  <NuxtLayout name="admin">
-    <div>
-      <div class="flex items-center mb-8">
-        <UButton to="/admin/events" variant="ghost" color="gray" icon="i-heroicons-arrow-left" class="mr-4">
-          Back to Events
-        </UButton>
-        <h1 class="text-3xl font-bold text-gray-900">Create New Event</h1>
-      </div>
-
-      <UCard class="max-w-2xl">
-        <form @submit.prevent="createEvent" class="space-y-6">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Event Name</label>
-            <UInput v-model="form.name" placeholder="Enter event name" :error="errors.name" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Event Date</label>
-            <UInput v-model="form.date" type="date" :error="errors.date" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Venue</label>
-            <UInput v-model="form.venue" placeholder="Enter venue name" :error="errors.venue" />
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Total Tickets</label>
-              <UInput v-model="form.total_tickets" type="number" placeholder="Enter total tickets"
-                :error="errors.total_tickets" />
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Ticket Price ($)</label>
-              <UInput v-model="form.ticket_price" type="number" step="0.01" placeholder="Enter ticket price"
-                :error="errors.ticket_price" />
-            </div>
-          </div>
-
-          <div class="flex justify-end space-x-4">
-            <UButton to="/admin/events" variant="ghost" color="gray">
-              Cancel
-            </UButton>
-            <UButton type="submit" color="blue" :loading="isSubmitting">
-              Create Event
-            </UButton>
-          </div>
-        </form>
-      </UCard>
+  <div>
+    <div class="flex items-center mb-8">
+      <UButton to="/admin/events" variant="ghost" icon="i-heroicons-arrow-left" class="text-gray-500 mr-4">
+        Back to Events
+      </UButton>
+      <h1 class="text-3xl font-bold text-gray-900">Create New Event</h1>
     </div>
-  </NuxtLayout>
+
+    <UCard class="max-w-2xl">
+      <form @submit.prevent="createEvent" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Event Name</label>
+          <UInput v-model="form.name" placeholder="Enter event name" :error="errors.name" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Event Date</label>
+          <UInput v-model="form.date" type="date" :error="errors.date" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Venue</label>
+          <UInput v-model="form.venue" placeholder="Enter venue name" :error="errors.venue" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Total Tickets</label>
+            <UInput v-model="form.total_tickets" type="number" placeholder="Enter total tickets"
+              :error="errors.total_tickets" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ticket Price ($)</label>
+            <UInput v-model="form.ticket_price" type="number" step="0.01" placeholder="Enter ticket price"
+              :error="errors.ticket_price" />
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <UButton to="/admin/events" variant="ghost" class="text-gray-500 hover:bg-gray-100">
+            Cancel
+          </UButton>
+          <UButton type="submit" :loading="isSubmitting" class="bg-blue-500 hover:bg-blue-700 text-white">
+            Create Event
+          </UButton>
+        </div>
+      </form>
+    </UCard>
+  </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "admin",
+});
 const form = ref({
   name: '',
   date: '',
