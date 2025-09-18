@@ -1,121 +1,121 @@
 <template>
-  <NuxtLayout name="admin">
-    <div>
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">Bookings Management</h1>
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Bookings Management</h1>
 
-      <!-- Filters -->
-      <UCard class="mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Event</label>
-            <USelect v-model="selectedEvent" :options="eventOptions" placeholder="All Events" />
+    <!-- Filters -->
+    <UCard class="mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Event</label>
+          <USelect v-model="selectedEvent" :options="eventOptions" placeholder="All Events" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+          <USelect v-model="selectedStatus" :options="statusOptions" placeholder="All Statuses" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+          <UInput v-model="searchQuery" placeholder="Search by user name or email"
+            icon="i-heroicons-magnifying-glass" />
+        </div>
+      </div>
+    </UCard>
+
+    <!-- Bookings Table -->
+    <UCard>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Booking ID
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                User
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Event
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tickets
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Total Price
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="booking in filteredBookings" :key="booking.id" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">#{{ booking.id }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div>
+                  <div class="text-sm font-medium text-gray-900">{{ booking.user.name }}</div>
+                  <div class="text-sm text-gray-500">{{ booking.user.email }}</div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div>
+                  <div class="text-sm font-medium text-gray-900">{{ booking.event.name }}</div>
+                  <div class="text-sm text-gray-500">{{ formatDate(booking.event.event_date) }}</div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ booking.num_of_tickets }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">${{ booking.total_ticket_price }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ formatDate(booking.created_at) }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-eye" @click="viewBooking(booking)">
+                    View
+                  </UButton>
+                  <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-x-mark"
+                    @click="cancelBooking(booking.id)">
+                    Cancel
+                  </UButton>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-gray-700">
+            Showing {{ filteredBookings.length }} of {{ bookings.length }} bookings
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
-            <USelect v-model="selectedStatus" :options="statusOptions" placeholder="All Statuses" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-            <UInput v-model="searchQuery" placeholder="Search by user name or email"
-              icon="i-heroicons-magnifying-glass" />
+          <div class="flex space-x-2">
+            <UButton size="sm" variant="ghost" color="gray" disabled>
+              Previous
+            </UButton>
+            <UButton size="sm" variant="ghost" color="gray" disabled>
+              Next
+            </UButton>
           </div>
         </div>
-      </UCard>
-
-      <!-- Bookings Table -->
-      <UCard>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Booking ID
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Event
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tickets
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Total Price
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="booking in filteredBookings" :key="booking.id" class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900">#{{ booking.id }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{{ booking.user.name }}</div>
-                    <div class="text-sm text-gray-500">{{ booking.user.email }}</div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{{ booking.event.name }}</div>
-                    <div class="text-sm text-gray-500">{{ formatDate(booking.event.event_date) }}</div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ booking.num_of_tickets }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900">${{ booking.total_ticket_price }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ formatDate(booking.created_at) }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div class="flex space-x-2">
-                    <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-eye"
-                      @click="viewBooking(booking)">
-                      View
-                    </UButton>
-                    <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-x-mark"
-                      @click="cancelBooking(booking.id)">
-                      Cancel
-                    </UButton>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="px-6 py-4 border-t border-gray-200">
-          <div class="flex items-center justify-between">
-            <div class="text-sm text-gray-700">
-              Showing {{ filteredBookings.length }} of {{ bookings.length }} bookings
-            </div>
-            <div class="flex space-x-2">
-              <UButton size="sm" variant="ghost" color="gray" disabled>
-                Previous
-              </UButton>
-              <UButton size="sm" variant="ghost" color="gray" disabled>
-                Next
-              </UButton>
-            </div>
-          </div>
-        </div>
-      </UCard>
-    </div>
-  </NuxtLayout>
+      </div>
+    </UCard>
+  </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "admin",
+});
 // Mock data for now - in real app, this would come from API
 const bookings = ref([
   {

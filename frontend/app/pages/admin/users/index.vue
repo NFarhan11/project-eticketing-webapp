@@ -1,125 +1,125 @@
 <template>
-  <NuxtLayout name="admin">
-    <div>
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">Users Management</h1>
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Users Management</h1>
 
-      <!-- Search and Filters -->
-      <UCard class="mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Search Users</label>
-            <UInput v-model="searchQuery" placeholder="Search by name or email" icon="i-heroicons-magnifying-glass" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Role</label>
-            <USelect v-model="selectedRole" :options="roleOptions" placeholder="All Roles" />
-          </div>
+    <!-- Search and Filters -->
+    <UCard class="mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Search Users</label>
+          <UInput v-model="searchQuery" placeholder="Search by name or email" icon="i-heroicons-magnifying-glass" />
         </div>
-      </UCard>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Role</label>
+          <USelect v-model="selectedRole" :options="roleOptions" placeholder="All Roles" />
+        </div>
+      </div>
+    </UCard>
 
-      <!-- Users Table -->
-      <UCard>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Bookings
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Total Spent
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Joined
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                      <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                        <UIcon name="i-heroicons-user" class="w-6 h-6 text-gray-600" />
-                      </div>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">{{ user.name }}</div>
-                      <div class="text-sm text-gray-500">ID: {{ user.id }}</div>
+    <!-- Users Table -->
+    <UCard>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                User
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Role
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Bookings
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Total Spent
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Joined
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                      <UIcon name="i-heroicons-user" class="w-6 h-6 text-gray-600" />
                     </div>
                   </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ user.email }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <UBadge :color="user.role === 'admin' ? 'red' : user.role === 'vip' ? 'purple' : 'gray'"
-                    variant="subtle">
-                    {{ user.role }}
-                  </UBadge>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ user.total_bookings }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900">${{ user.total_spent }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ formatDate(user.created_at) }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div class="flex space-x-2">
-                    <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-eye" @click="viewUser(user)">
-                      View
-                    </UButton>
-                    <UButton size="xs" variant="ghost" color="purple" icon="i-heroicons-pencil" @click="editUser(user)">
-                      Edit
-                    </UButton>
-                    <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-trash"
-                      @click="deleteUser(user.id)">
-                      Delete
-                    </UButton>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">{{ user.name }}</div>
+                    <div class="text-sm text-gray-500">ID: {{ user.id }}</div>
                   </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ user.email }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <UBadge :color="user.role === 'admin' ? 'red' : user.role === 'vip' ? 'purple' : 'gray'"
+                  variant="subtle">
+                  {{ user.role }}
+                </UBadge>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ user.total_bookings }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">${{ user.total_spent }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ formatDate(user.created_at) }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <UButton size="xs" variant="ghost" color="blue" icon="i-heroicons-eye" @click="viewUser(user)">
+                    View
+                  </UButton>
+                  <UButton size="xs" variant="ghost" color="purple" icon="i-heroicons-pencil" @click="editUser(user)">
+                    Edit
+                  </UButton>
+                  <UButton size="xs" variant="ghost" color="red" icon="i-heroicons-trash" @click="deleteUser(user.id)">
+                    Delete
+                  </UButton>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Pagination -->
-        <div class="px-6 py-4 border-t border-gray-200">
-          <div class="flex items-center justify-between">
-            <div class="text-sm text-gray-700">
-              Showing {{ filteredUsers.length }} of {{ users.length }} users
-            </div>
-            <div class="flex space-x-2">
-              <UButton size="sm" variant="ghost" color="gray" disabled>
-                Previous
-              </UButton>
-              <UButton size="sm" variant="ghost" color="gray" disabled>
-                Next
-              </UButton>
-            </div>
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-gray-700">
+            Showing {{ filteredUsers.length }} of {{ users.length }} users
+          </div>
+          <div class="flex space-x-2">
+            <UButton size="sm" variant="ghost" color="gray" disabled>
+              Previous
+            </UButton>
+            <UButton size="sm" variant="ghost" color="gray" disabled>
+              Next
+            </UButton>
           </div>
         </div>
-      </UCard>
-    </div>
-  </NuxtLayout>
+      </div>
+    </UCard>
+  </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "admin",
+});
 // Mock data for now - in real app, this would come from API
 const users = ref([
   {

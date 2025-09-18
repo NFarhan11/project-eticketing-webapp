@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: "admin",
+  layout: "default",
 });
 // Mock data for now - in real app, this would come from API
 const events = ref([
