@@ -7,7 +7,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       version: "1.0.0",
-      apiBase: process.env.NUXT_PUBLIC_LARAVEL_API_URL,
+      services: {
+        laravel: process.env.NUXT_PUBLIC_LARAVEL_API_URL,
+      },
     },
   },
   css: ["~/assets/css/main.css"],

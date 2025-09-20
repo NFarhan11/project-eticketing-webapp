@@ -1,16 +1,10 @@
-import { $fetch } from "ofetch";
+import useApi from "~~/server/utils/useApi";
 
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const baseURL = config.public.apiBase;
+export default defineEventHandler(async () => {
+  const { laravel } = useApi();
 
   try {
-    const response = await $fetch("/api/events", {
-      baseURL,
-      method: "GET",
-    });
-
-    return response;
+    return laravel("api/events", { method: "GET" });
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
