@@ -9,6 +9,25 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
+    public function index(Request $request)
+    {
+        try {
+            $query = Event::query();
+
+            // Get events ordered by event date
+            $events = $query->orderBy('event_date', 'asc')->get();
+            
+            return response()->json([
+                'message' => 'Events retrieved successfully',
+                'events' => $events,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to retrieve events',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function store(Request $request)
     {
         try {
