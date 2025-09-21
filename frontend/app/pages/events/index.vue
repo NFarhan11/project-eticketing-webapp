@@ -2,9 +2,6 @@
   <div>
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold text-gray-900">Events Management</h1>
-      <UButton to="/admin/events/create" color="warning" icon="i-heroicons-plus">
-        Create New Event
-      </UButton>
     </div>
 
     <!-- Events Table -->
@@ -27,9 +24,6 @@
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Price
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
               </th>
             </tr>
           </thead>
@@ -59,18 +53,6 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">${{ event.ticket_price }}</div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <div class="flex space-x-2">
-                  <UButton size="xs" variant="ghost" icon="i-heroicons-pencil" @click="editEvent(event)"
-                    class="text-blue-500 hover:bg-blue-100">
-                    Edit
-                  </UButton>
-                  <UButton size="xs" variant="ghost" icon="i-heroicons-trash" @click="deleteEvent(event.id)"
-                    class="text-red-500 hover:bg-red-100">
-                    Delete
-                  </UButton>
-                </div>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -84,17 +66,7 @@ definePageMeta({
   layout: "default",
 });
 
-interface Event {
-  id: number
-  name: string
-  event_date: string
-  venue: string
-  total_tickets: number
-  available_tickets: number
-  ticket_price: number
-}
-
-const events = ref<Event[]>([]);
+const events = ref<AppEvent[]>([]);
 
 const loadEvents = async () => {
   try {
@@ -115,19 +87,6 @@ const formatDate = (dateString: string) => {
     month: 'short',
     day: 'numeric'
   })
-}
-
-const editEvent = (event: any) => {
-  // Navigate to edit page
-  navigateTo(`/admin/events/${event.id}/edit`)
-}
-
-const deleteEvent = (eventId: number) => {
-  // Show confirmation dialog and delete event
-  if (confirm('Are you sure you want to delete this event?')) {
-    // In real app, call API to delete
-    events.value = events.value.filter(e => e.id !== eventId)
-  }
 }
 
 onMounted(async () => {

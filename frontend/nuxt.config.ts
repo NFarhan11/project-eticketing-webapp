@@ -12,6 +12,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  imports: {
+    dirs: ["shared/types"],
+  },
   css: ["~/assets/css/main.css"],
   vite: {
     plugins: [tailwindcss()],

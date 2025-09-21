@@ -83,45 +83,21 @@
 definePageMeta({
   layout: "admin",
 });
-// Mock data for now - in real app, this would come from API
-const events = ref([
-  {
-    id: 1,
-    name: "Summer Music Festival",
-    event_date: "2024-08-15",
-    venue: "Central Park",
-    total_tickets: 500,
-    available_tickets: 120,
-    ticket_price: 60.00
-  },
-  {
-    id: 2,
-    name: "Tech Conference 2024",
-    event_date: "2024-09-20",
-    venue: "Convention Center",
-    total_tickets: 200,
-    available_tickets: 45,
-    ticket_price: 75.00
-  },
-  {
-    id: 3,
-    name: "Art Exhibition",
-    event_date: "2024-10-05",
-    venue: "Museum of Modern Art",
-    total_tickets: 100,
-    available_tickets: 78,
-    ticket_price: 15.00
-  },
-  {
-    id: 4,
-    name: "Food & Wine Festival",
-    event_date: "2024-11-12",
-    venue: "Downtown Plaza",
-    total_tickets: 300,
-    available_tickets: 300,
-    ticket_price: 45.00
+
+const events = ref<AppEvent[]>([]);
+
+const loadEvents = async () => {
+  try {
+    const response = await $fetch('/api/events', {
+      method: 'GET'
+    });
+
+    events.value = response.events;
+    console.log('events loaded...');
+  } catch (error) {
+    console.error('Failed to fetch events: ', error);
   }
-])
+};
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -143,4 +119,8 @@ const deleteEvent = (eventId: number) => {
     events.value = events.value.filter(e => e.id !== eventId)
   }
 }
+
+onMounted(async () => {
+  await loadEvents()
+})
 </script>
