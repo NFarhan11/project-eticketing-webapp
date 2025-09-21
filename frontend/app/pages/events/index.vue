@@ -2,9 +2,6 @@
   <div>
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold text-gray-900">Events Management</h1>
-      <UButton to="/admin/events/create" color="warning" icon="i-heroicons-plus">
-        Create New Event
-      </UButton>
     </div>
 
     <!-- Events Table -->
@@ -27,9 +24,6 @@
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Price
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
               </th>
             </tr>
           </thead>
@@ -59,18 +53,6 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">${{ event.ticket_price }}</div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <div class="flex space-x-2">
-                  <UButton size="xs" variant="ghost" icon="i-heroicons-pencil" @click="editEvent(event)"
-                    class="text-blue-500 hover:bg-blue-100">
-                    Edit
-                  </UButton>
-                  <UButton size="xs" variant="ghost" icon="i-heroicons-trash" @click="deleteEvent(event.id)"
-                    class="text-red-500 hover:bg-red-100">
-                    Delete
-                  </UButton>
-                </div>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -83,45 +65,21 @@
 definePageMeta({
   layout: "default",
 });
-// Mock data for now - in real app, this would come from API
-const events = ref([
-  {
-    id: 1,
-    name: "Summer Music Festival",
-    event_date: "2024-08-15",
-    venue: "Central Park",
-    total_tickets: 500,
-    available_tickets: 120,
-    ticket_price: 60.00
-  },
-  {
-    id: 2,
-    name: "Tech Conference 2024",
-    event_date: "2024-09-20",
-    venue: "Convention Center",
-    total_tickets: 200,
-    available_tickets: 45,
-    ticket_price: 75.00
-  },
-  {
-    id: 3,
-    name: "Art Exhibition",
-    event_date: "2024-10-05",
-    venue: "Museum of Modern Art",
-    total_tickets: 100,
-    available_tickets: 78,
-    ticket_price: 15.00
-  },
-  {
-    id: 4,
-    name: "Food & Wine Festival",
-    event_date: "2024-11-12",
-    venue: "Downtown Plaza",
-    total_tickets: 300,
-    available_tickets: 300,
-    ticket_price: 45.00
+
+const events = ref<AppEvent[]>([]);
+
+const loadEvents = async () => {
+  try {
+    const response = await $fetch('/api/events', {
+      method: 'GET'
+    });
+
+    events.value = response.events;
+    console.log('events loaded...');
+  } catch (error) {
+    console.error('Failed to fetch events: ', error);
   }
-])
+};
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -131,16 +89,7 @@ const formatDate = (dateString: string) => {
   })
 }
 
-const editEvent = (event: any) => {
-  // Navigate to edit page
-  navigateTo(`/admin/events/${event.id}/edit`)
-}
-
-const deleteEvent = (eventId: number) => {
-  // Show confirmation dialog and delete event
-  if (confirm('Are you sure you want to delete this event?')) {
-    // In real app, call API to delete
-    events.value = events.value.filter(e => e.id !== eventId)
-  }
-}
+onMounted(async () => {
+  await loadEvents()
+})
 </script>

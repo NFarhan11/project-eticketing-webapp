@@ -7,7 +7,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       version: "1.0.0",
+      services: {
+        laravel: process.env.NUXT_PUBLIC_LARAVEL_API_URL,
+      },
     },
+  },
+  imports: {
+    dirs: ["shared/types"],
   },
   css: ["~/assets/css/main.css"],
   vite: {
