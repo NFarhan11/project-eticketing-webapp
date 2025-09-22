@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-    <!-- Header Section -->
+    <!-- Header -->
     <div class="bg-white shadow-sm border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex items-center justify-between">
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Progress Indicator -->
       <div class="mb-8">
@@ -63,7 +63,7 @@
           </div>
         </template>
 
-        <form @submit="onSubmit" class="space-y-8">
+        <form @submit.prevent="onSubmit" class="space-y-8">
           <!-- Event Name Section -->
           <div class="space-y-4">
             <div class="flex items-center space-x-2">
@@ -71,8 +71,13 @@
               <label class="text-sm font-semibold text-gray-900">Event Name</label>
               <span class="text-red-500">*</span>
             </div>
-            <UInput v-model="name" placeholder="e.g., Summer Music Festival 2024" :error="errors.name" size="lg"
+            <UInput v-model="name" placeholder="e.g., Summer Music Festival 2024" size="lg" :error="!!nameError"
               class="transition-all duration-200 focus-within:scale-[1.02]" />
+            <div v-if="nameError"
+              class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+              <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
+              <span class="text-red-600 text-sm font-medium">{{ nameError }}</span>
+            </div>
             <p class="text-xs text-gray-500">Choose a memorable name that captures the essence of your event</p>
           </div>
 
@@ -84,8 +89,13 @@
                 <label class="text-sm font-semibold text-gray-900">Event Date</label>
                 <span class="text-red-500">*</span>
               </div>
-              <UInput v-model="date" type="date" :error="errors.date" size="lg"
+              <UInput v-model="date" type="date" size="lg" :error="!!dateError"
                 class="transition-all duration-200 focus-within:scale-[1.02]" />
+              <div v-if="dateError"
+                class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+                <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
+                <span class="text-red-600 text-sm font-medium">{{ dateError }}</span>
+              </div>
               <p class="text-xs text-gray-500">Select a future date for your event</p>
             </div>
 
@@ -95,8 +105,13 @@
                 <label class="text-sm font-semibold text-gray-900">Venue</label>
                 <span class="text-red-500">*</span>
               </div>
-              <UInput v-model="venue" placeholder="e.g., Madison Square Garden, New York" :error="errors.venue"
+              <UInput v-model="venue" placeholder="e.g., Madison Square Garden, New York" :error="!!venueError"
                 size="lg" class="transition-all duration-200 focus-within:scale-[1.02]" />
+              <div v-if="venueError"
+                class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+                <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
+                <span class="text-red-600 text-sm font-medium">{{ venueError }}</span>
+              </div>
               <p class="text-xs text-gray-500">Specify the location where the event will take place</p>
             </div>
           </div>
@@ -115,8 +130,13 @@
                   <label class="text-sm font-semibold text-gray-900">Total Tickets</label>
                   <span class="text-red-500">*</span>
                 </div>
-                <UInput v-model="totalTickets" type="number" placeholder="e.g., 500" :error="errors.total_tickets"
-                  size="lg" class="transition-all duration-200 focus-within:scale-[1.02]" />
+                <UInput v-model="totalTickets" type="number" placeholder="e.g., 500" size="lg"
+                  :error="!!totalTicketsError" class="transition-all duration-200 focus-within:scale-[1.02]" />
+                <div v-if="totalTicketsError"
+                  class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+                  <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
+                  <span class="text-red-600 text-sm font-medium">{{ totalTicketsError }}</span>
+                </div>
                 <div class="flex items-center space-x-2">
                   <Icon name="i-heroicons-information-circle" class="w-4 h-4 text-blue-500" />
                   <p class="text-xs text-blue-600">Maximum capacity for your event</p>
@@ -130,10 +150,14 @@
                   <span class="text-red-500">*</span>
                 </div>
                 <div class="relative">
-                  <UInput v-model="ticketPrice" type="number" step="0.01" placeholder="e.g., 49.99"
-                    :error="errors.ticket_price" size="lg"
-                    class="transition-all duration-200 focus-within:scale-[1.02] pl-8" />
+                  <UInput v-model="ticketPrice" type="number" step="0.01" placeholder="e.g., 49.99" size="lg"
+                    :error="!!ticketPriceError" class="transition-all duration-200 focus-within:scale-[1.02] pl-8" />
                   <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">RM</span>
+                </div>
+                <div v-if="ticketPriceError"
+                  class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+                  <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
+                  <span class="text-red-600 text-sm font-medium">{{ ticketPriceError }}</span>
                 </div>
                 <div class="flex items-center space-x-2">
                   <Icon name="i-heroicons-information-circle" class="w-4 h-4 text-green-500" />
@@ -187,87 +211,66 @@
 <script setup lang="ts">
 import { z } from 'zod';
 import { toTypedSchema } from '@vee-validate/zod';
-import { useForm } from 'vee-validate';
+import { useField, useForm } from 'vee-validate';
 
 definePageMeta({
   layout: "admin",
 });
 
 // Define validation schema
-const createEventSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Event name is required')
-    .min(3, 'Event name must be at least 3 characters')
-    .max(100, 'Event name must be less than 100 characters'),
+const schema = toTypedSchema(
+  z.object({
+    name: z
+      .string()
+      .min(1, 'Event name is required')
+      .min(3, 'Event name must be at least 3 characters')
+      .max(100, 'Event name must be less than 100 characters'),
 
-  date: z
-    .string()
-    .min(1, 'Event date is required')
-    .refine(
-      (date) => new Date(date) > new Date(), 'Event date must be in future'
-    ),
+    date: z
+      .string()
+      .min(1, 'Event date is required')
+      .refine(
+        (date) => new Date(date) > new Date(), 'Event date must be in future'
+      ),
 
-  venue: z
-    .string()
-    .min(1, 'Venue is required')
-    .min(2, 'Venue must be at least 2 characters')
-    .max(200, 'Venue name must be less than 200 characters'),
+    venue: z
+      .string()
+      .min(1, 'Venue is required')
+      .min(2, 'Venue must be at least 2 characters')
+      .max(200, 'Venue name must be less than 200 characters'),
 
-  total_tickets: z
-    .number()
-    .min(1, 'Must have at least 1 ticket')
-    .max(50000, 'Maximum 50,000 tickets allowed')
-    .int('Total ticket must be a whole number'),
+    total_tickets: z
+      .number()
+      .min(1, 'Must have at least 1 ticket')
+      .max(50000, 'Maximum 50,000 tickets allowed')
+      .int('Total ticket must be a whole number'),
 
-  ticket_price: z
-    .number()
-    .min(0.01, 'Ticket price must be at least RM0.01')
-    .max(10000, 'Maximum ticket price is RM10,000')
-    .multipleOf(0.01, 'Price must be in cents (e.g., 19.99)')
-});
+    ticket_price: z
+      .number()
+      .min(0.01, 'Ticket price must be at least RM0.01')
+      .max(10000, 'Maximum ticket price is RM10,000')
+      .multipleOf(0.01, 'Price must be in cents (e.g., 19.99)')
+  })
+);
 
-// Create typescript type from schema (z.infer to auto type)
-type CreateEventForm = z.infer<typeof createEventSchema>
+const { handleSubmit } = useForm({ validationSchema: schema });
 
-// Setup form with VeeValidate
-const { handleSubmit, errors, defineField, meta } = useForm({
-  validationSchema: toTypedSchema(createEventSchema),
-  initialValues: {
-    name: '',
-    date: '',
-    venue: '',
-    total_tickets: 1,
-    ticket_price: 0.01
-  }
-});
-
-const [name] = defineField('name');
-const [date] = defineField('date');
-const [venue] = defineField('venue');
-const [totalTickets] = defineField('total_tickets');
-const [ticketPrice] = defineField('ticket_price');
+const { value: name, errorMessage: nameError } = useField<string>('name');
+const { value: date, errorMessage: dateError } = useField<string>('date');
+const { value: venue, errorMessage: venueError } = useField<string>('venue');
+const { value: totalTickets, errorMessage: totalTicketsError } = useField<number>('total_tickets');
+const { value: ticketPrice, errorMessage: ticketPriceError } = useField<number>('ticket_price');
 
 const isSubmitting = ref(false);
 
-const onSubmit = handleSubmit(async (values: CreateEventForm) => {
-  isSubmitting.value = true;
-
+const onSubmit = handleSubmit(async (values) => {
   try {
-    console.log('Validate form data:', values);
-
-    // API calls
-
-    // TEMP: api calls
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert('TEMP: Event created successfully');
-
+    const res = await $fetch('/api/events', {
+      method: 'POST',
+      body: values
+    })
   } catch (error) {
-    console.error('Error creating event:', error);
-    alert('Error creating event. Please try again.');
-
-  } finally {
-    isSubmitting.value = false;
+    //
   }
 });
 </script>
