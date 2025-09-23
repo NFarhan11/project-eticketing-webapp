@@ -63,21 +63,16 @@
           </div>
         </template>
 
-        <form @submit.prevent="onSubmit" class="space-y-8">
+        <UForm :schema="schema" :state="state" @submit="onSubmit" class="space-y-8">
           <!-- Event Name Section -->
           <div class="space-y-4">
             <div class="flex items-center space-x-2">
               <Icon name="i-heroicons-tag" class="w-5 h-5 text-gray-400" />
-              <label class="text-sm font-semibold text-gray-900">Event Name</label>
+              <UFormField label="Event Name" name="name" />
               <span class="text-red-500">*</span>
             </div>
-            <UInput v-model="name" placeholder="e.g., Summer Music Festival 2024" size="lg" :error="!!nameError"
+            <UInput v-model="state.name" placeholder="e.g., Summer Music Festival 2024" size="lg"
               class="transition-all duration-200 focus-within:scale-[1.02]" />
-            <div v-if="nameError"
-              class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-              <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
-              <span class="text-red-600 text-sm font-medium">{{ nameError }}</span>
-            </div>
             <p class="text-xs text-gray-500">Choose a memorable name that captures the essence of your event</p>
           </div>
 
@@ -86,32 +81,22 @@
             <div class="space-y-4">
               <div class="flex items-center space-x-2">
                 <Icon name="i-heroicons-calendar" class="w-5 h-5 text-gray-400" />
-                <label class="text-sm font-semibold text-gray-900">Event Date</label>
+                <UFormField label="Event Date" name="date" />
                 <span class="text-red-500">*</span>
               </div>
-              <UInput v-model="date" type="date" size="lg" :error="!!dateError"
+              <UInput v-model="state.date" type="date" size="lg"
                 class="transition-all duration-200 focus-within:scale-[1.02]" />
-              <div v-if="dateError"
-                class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
-                <span class="text-red-600 text-sm font-medium">{{ dateError }}</span>
-              </div>
               <p class="text-xs text-gray-500">Select a future date for your event</p>
             </div>
 
             <div class="space-y-4">
               <div class="flex items-center space-x-2">
                 <Icon name="i-heroicons-map-pin" class="w-5 h-5 text-gray-400" />
-                <label class="text-sm font-semibold text-gray-900">Venue</label>
+                <UFormField label="Venue" name="venue" />
                 <span class="text-red-500">*</span>
               </div>
-              <UInput v-model="venue" placeholder="e.g., Madison Square Garden, New York" :error="!!venueError"
-                size="lg" class="transition-all duration-200 focus-within:scale-[1.02]" />
-              <div v-if="venueError"
-                class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
-                <span class="text-red-600 text-sm font-medium">{{ venueError }}</span>
-              </div>
+              <UInput v-model="state.venue" placeholder="e.g., Madison Square Garden, New York" size="lg"
+                class="transition-all duration-200 focus-within:scale-[1.02]" />
               <p class="text-xs text-gray-500">Specify the location where the event will take place</p>
             </div>
           </div>
@@ -127,16 +112,11 @@
               <div class="space-y-4">
                 <div class="flex items-center space-x-2">
                   <Icon name="i-heroicons-users" class="w-4 h-4 text-gray-400" />
-                  <label class="text-sm font-semibold text-gray-900">Total Tickets</label>
+                  <UFormField label="Total Tickets" name="totalTickets" />
                   <span class="text-red-500">*</span>
                 </div>
-                <UInput v-model="totalTickets" type="number" placeholder="e.g., 500" size="lg"
-                  :error="!!totalTicketsError" class="transition-all duration-200 focus-within:scale-[1.02]" />
-                <div v-if="totalTicketsError"
-                  class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                  <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
-                  <span class="text-red-600 text-sm font-medium">{{ totalTicketsError }}</span>
-                </div>
+                <UInput v-model="state.totalTickets" type="number" placeholder="e.g., 500" size="lg"
+                  class="transition-all duration-200 focus-within:scale-[1.02]" />
                 <div class="flex items-center space-x-2">
                   <Icon name="i-heroicons-information-circle" class="w-4 h-4 text-blue-500" />
                   <p class="text-xs text-blue-600">Maximum capacity for your event</p>
@@ -146,18 +126,13 @@
               <div class="space-y-4">
                 <div class="flex items-center space-x-2">
                   <Icon name="i-heroicons-currency-dollar" class="w-4 h-4 text-gray-400" />
-                  <label class="text-sm font-semibold text-gray-900">Ticket Price</label>
+                  <UFormField label="Ticket Price" name="ticketPrice" />
                   <span class="text-red-500">*</span>
                 </div>
                 <div class="relative">
-                  <UInput v-model="ticketPrice" type="number" step="0.01" placeholder="e.g., 49.99" size="lg"
-                    :error="!!ticketPriceError" class="transition-all duration-200 focus-within:scale-[1.02] pl-8" />
+                  <UInput v-model="state.ticketPrice" type="number" step="0.01" placeholder="e.g., 49.99" size="lg"
+                    class="transition-all duration-200 focus-within:scale-[1.02] pl-8" />
                   <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">RM</span>
-                </div>
-                <div v-if="ticketPriceError"
-                  class="flex items-center space-x-2 mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                  <Icon name="i-heroicons-exclamation-triangle" class="w-4 h-4 text-red-500 flex-shrink-0" />
-                  <span class="text-red-600 text-sm font-medium">{{ ticketPriceError }}</span>
                 </div>
                 <div class="flex items-center space-x-2">
                   <Icon name="i-heroicons-information-circle" class="w-4 h-4 text-green-500" />
@@ -176,10 +151,10 @@
               </div>
               <div class="text-right">
                 <div class="text-2xl font-bold text-green-600">
-                  RM{{ ((Number(totalTickets) || 0) * (Number(ticketPrice) || 0)).toLocaleString() }}
+                  RM{{ ((Number(state.totalTickets) || 0) * (Number(state.ticketPrice) || 0)).toLocaleString() }}
                 </div>
                 <div class="text-xs text-gray-500">
-                  {{ Number(totalTickets) || 0 }} tickets × RM{{ Number(ticketPrice) || 0 }}
+                  {{ Number(state.totalTickets) || 0 }} tickets × RM{{ Number(state.ticketPrice) || 0 }}
                 </div>
               </div>
             </div>
@@ -194,14 +169,14 @@
                 <Icon name="i-heroicons-x-mark" class="w-4 h-4 mr-2" />
                 Cancel
               </UButton>
-              <UButton type="submit" :loading="isSubmitting" size="lg"
+              <UButton type="submit" size="lg"
                 class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 cursor-pointer">
                 <Icon name="i-heroicons-plus-circle" class="w-4 h-4 mr-2" />
                 Create Event
               </UButton>
             </div>
           </div>
-        </form>
+        </UForm>
       </UCard>
 
     </div>
@@ -210,67 +185,64 @@
 
 <script setup lang="ts">
 import { z } from 'zod';
-import { toTypedSchema } from '@vee-validate/zod';
-import { useField, useForm } from 'vee-validate';
+import type { FormSubmitEvent } from '@nuxt/ui';
 
 definePageMeta({
   layout: "admin",
 });
 
 // Define validation schema
-const schema = toTypedSchema(
-  z.object({
-    name: z
-      .string()
-      .min(1, 'Event name is required')
-      .min(3, 'Event name must be at least 3 characters')
-      .max(100, 'Event name must be less than 100 characters'),
+const schema = z.object({
+  name: z
+    .string()
+    .min(1, 'Event name is required')
+    .min(3, 'Event name must be at least 3 characters')
+    .max(100, 'Event name must be less than 100 characters'),
 
-    date: z
-      .string()
-      .min(1, 'Event date is required')
-      .refine(
-        (date) => new Date(date) > new Date(), 'Event date must be in future'
-      ),
+  date: z
+    .string()
+    .min(1, 'Event date is required')
+    .refine(
+      (date) => new Date(date) > new Date(), 'Event date must be in future'
+    ),
 
-    venue: z
-      .string()
-      .min(1, 'Venue is required')
-      .min(2, 'Venue must be at least 2 characters')
-      .max(200, 'Venue name must be less than 200 characters'),
+  venue: z
+    .string()
+    .min(1, 'Venue is required')
+    .min(2, 'Venue must be at least 2 characters')
+    .max(200, 'Venue name must be less than 200 characters'),
 
-    total_tickets: z
-      .number()
-      .min(1, 'Must have at least 1 ticket')
-      .max(50000, 'Maximum 50,000 tickets allowed')
-      .int('Total ticket must be a whole number'),
+  totalTickets: z
+    .number()
+    .min(1, 'Must have at least 1 ticket')
+    .max(50000, 'Maximum 50,000 tickets allowed')
+    .int('Total ticket must be a whole number'),
 
-    ticket_price: z
-      .number()
-      .min(0.01, 'Ticket price must be at least RM0.01')
-      .max(10000, 'Maximum ticket price is RM10,000')
-      .multipleOf(0.01, 'Price must be in cents (e.g., 19.99)')
-  })
-);
-
-const { handleSubmit } = useForm({ validationSchema: schema });
-
-const { value: name, errorMessage: nameError } = useField<string>('name');
-const { value: date, errorMessage: dateError } = useField<string>('date');
-const { value: venue, errorMessage: venueError } = useField<string>('venue');
-const { value: totalTickets, errorMessage: totalTicketsError } = useField<number>('total_tickets');
-const { value: ticketPrice, errorMessage: ticketPriceError } = useField<number>('ticket_price');
-
-const isSubmitting = ref(false);
-
-const onSubmit = handleSubmit(async (values) => {
-  try {
-    const res = await $fetch('/api/events', {
-      method: 'POST',
-      body: values
-    })
-  } catch (error) {
-    //
-  }
+  ticketPrice: z
+    .number()
+    .min(0.01, 'Ticket price must be at least RM0.01')
+    .max(10000, 'Maximum ticket price is RM10,000')
+    .multipleOf(0.01, 'Price must be in cents (e.g., 19.99)')
 });
+
+type Schema = z.output<typeof schema>;
+
+const state = reactive<Partial<Schema>>({
+  name: undefined,
+  date: undefined,
+  venue: undefined,
+  totalTickets: undefined,
+  ticketPrice: undefined
+});
+
+const toast = useToast();
+
+const onSubmit = async (event: FormSubmitEvent<Schema>) => {
+  toast.add({
+    title: 'Success',
+    description: 'The form has been submitted.',
+    color: 'success'
+  });
+  console.log(event.data);
+}
 </script>
