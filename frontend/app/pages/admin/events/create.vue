@@ -195,8 +195,7 @@ definePageMeta({
 const schema = z.object({
   name: z
     .string()
-    .min(1, 'Event name is required')
-    .min(3, 'Event name must be at least 3 characters')
+    .min(3, 'Event name is required and must be at least 3 characters')
     .max(100, 'Event name must be less than 100 characters'),
 
   date: z
@@ -208,8 +207,7 @@ const schema = z.object({
 
   venue: z
     .string()
-    .min(1, 'Venue is required')
-    .min(2, 'Venue must be at least 2 characters')
+    .min(2, 'Venue is required and must be at least 2 characters')
     .max(200, 'Venue name must be less than 200 characters'),
 
   totalTickets: z
@@ -227,22 +225,47 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>;
 
-const state = reactive<Partial<Schema>>({
-  name: undefined,
-  date: undefined,
-  venue: undefined,
-  totalTickets: undefined,
-  ticketPrice: undefined
+const state = reactive<Schema>({
+  name: '',
+  date: '',
+  venue: '',
+  totalTickets: 1,
+  ticketPrice: 0.01
 });
 
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  toast.add({
-    title: 'Success',
-    description: 'The form has been submitted.',
-    color: 'success'
-  });
-  console.log(event.data);
+  try {
+    const payload = {
+      name: event.data.name,
+      date: event.data.date,
+      venue: event.data.venue,
+      total_tickets: event.data.totalTickets,
+      ticket_price: event.data.ticketPrice
+    }
+
+    const response = await $fetch('/api/events', {
+      method: 'POST',
+      body: payload
+    });
+
+    console.log('response', response);
+
+    toast.add({
+      title: 'Success',
+      description: 'Event created successfully!',
+      color: 'success'
+    });
+
+    await navigateTo('/admin/events');
+
+  } catch (error: any) {
+    toast.add({
+      title: 'Error',
+      description: error.data?.message || 'Failed to create event',
+      color: 'error'
+    });
+  }
 }
 </script>
