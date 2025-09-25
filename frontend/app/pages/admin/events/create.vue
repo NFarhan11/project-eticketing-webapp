@@ -151,10 +151,13 @@
               </div>
               <div class="text-right">
                 <div class="text-2xl font-bold text-green-600">
-                  RM{{ ((Number(state.totalTickets) || 0) * (Number(state.ticketPrice) || 0)).toLocaleString() }}
+                  RM{{ (state.totalTickets * state.ticketPrice).toLocaleString('en-MY', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }) }}
                 </div>
                 <div class="text-xs text-gray-500">
-                  {{ Number(state.totalTickets) || 0 }} tickets × RM{{ Number(state.ticketPrice) || 0 }}
+                  {{ state.totalTickets }} tickets × RM{{ state.ticketPrice }}
                 </div>
               </div>
             </div>
@@ -210,17 +213,16 @@ const schema = z.object({
     .min(2, 'Venue is required and must be at least 2 characters')
     .max(200, 'Venue name must be less than 200 characters'),
 
-  totalTickets: z
+  totalTickets: z.coerce
     .number()
     .min(1, 'Must have at least 1 ticket')
     .max(50000, 'Maximum 50,000 tickets allowed')
     .int('Total ticket must be a whole number'),
 
-  ticketPrice: z
+  ticketPrice: z.coerce
     .number()
     .min(0.01, 'Ticket price must be at least RM0.01')
     .max(10000, 'Maximum ticket price is RM10,000')
-    .multipleOf(0.01, 'Price must be in cents (e.g., 19.99)')
 });
 
 type Schema = z.output<typeof schema>;
