@@ -164,14 +164,14 @@ const loadEvents = async () => {
 };
 
 const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
+  return new Date(dateString).toLocaleDateString('en-MY', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
-  })
-}
+  });
+};
 
 onMounted(async () => {
-  await loadEvents()
-})
+  await loadEvents();
+});
 </script>
