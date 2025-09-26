@@ -72,4 +72,17 @@ class EventController extends Controller
             ], 500);
         }
     }
+    public function show(Event $event) {
+        try {
+            return response()->json([
+                'message'=> 'Event retrieved successfully',
+                'event'=> $event
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch event',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
