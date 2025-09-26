@@ -1,5 +1,3 @@
-import useApi from "~~/server/utils/useApi";
-
 export default defineEventHandler(async (event) => {
   const { laravel } = useApi();
 
