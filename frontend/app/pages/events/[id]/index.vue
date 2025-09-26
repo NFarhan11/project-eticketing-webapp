@@ -10,12 +10,13 @@
     <!-- Event Content -->
     <div v-else>
       <!-- Hero Section -->
-      <div class="relative h-96 bg-gradient-to-r from-blue-600 to-indigo-700 overflow-hidden">
+      <div class="relative h-96 bg-gradient-to-r from-slate-700 to-blue-600 overflow-hidden">
         <div class="absolute inset-0 bg-black/20"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div class="text-white">
             <div class="flex items-center space-x-2 mb-4">
-              <UButton to="/events" variant="ghost" size="sm" class="text-white/80 hover:text-white hover:bg-white/10">
+              <UButton to="/events" variant="ghost" size="sm"
+                class="text-white border-white/30 hover:bg-white/20 hover:border-white">
                 <Icon name="i-heroicons-arrow-left" class="w-4 h-4 mr-2" />
                 Back to Events
               </UButton>
@@ -59,9 +60,10 @@
                 </div>
               </template>
 
-              <!-- <div class="prose max-w-none text-gray-700">
+              <div class="prose max-w-none text-gray-700">
                 <p class="text-lg leading-relaxed">
-                  {{ event.description }}
+                  <!-- {{ event.description }} -->
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur praesentium velit ut?
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 not-prose">
@@ -70,7 +72,9 @@
                       <Icon name="i-heroicons-clock" class="w-5 h-5 text-blue-600" />
                       <span class="font-medium text-gray-900">Event Duration</span>
                     </div>
-                    <p class="text-gray-600">{{ event.duration }}</p>
+                    <p class="text-gray-600">
+                      <!-- {{ event.duration }} --> Lorem ipsum dolor sit amet.
+                    </p>
                   </div>
 
                   <div class="bg-green-50 rounded-lg p-4">
@@ -78,7 +82,10 @@
                       <Icon name="i-heroicons-users" class="w-5 h-5 text-green-600" />
                       <span class="font-medium text-gray-900">Age Requirement</span>
                     </div>
-                    <p class="text-gray-600">{{ event.ageRequirement }}</p>
+                    <p class="text-gray-600">
+                      <!-- {{ event.ageRequirement }} -->
+                      Lorem ipsum dolor sit.
+                    </p>
                   </div>
 
                   <div class="bg-purple-50 rounded-lg p-4">
@@ -86,7 +93,11 @@
                       <Icon name="i-heroicons-musical-note" class="w-5 h-5 text-purple-600" />
                       <span class="font-medium text-gray-900">Genre</span>
                     </div>
-                    <p class="text-gray-600">{{ event.genre }}</p>
+                    <p class="text-gray-600">
+                      <!-- {{ event.genre }} -->
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum culpa et dicta molestiae, sit
+                      temporibus.
+                    </p>
                   </div>
 
                   <div class="bg-orange-50 rounded-lg p-4">
@@ -94,10 +105,13 @@
                       <Icon name="i-heroicons-building-storefront" class="w-5 h-5 text-orange-600" />
                       <span class="font-medium text-gray-900">Organizer</span>
                     </div>
-                    <p class="text-gray-600">{{ event.organizer }}</p>
+                    <p class="text-gray-600">
+                      <!-- {{ event.organizer }} -->
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates cum id molestiae!
+                    </p>
                   </div>
                 </div>
-              </div> -->
+              </div>
             </UCard>
 
             <!-- Venue Details -->
@@ -120,16 +134,30 @@
                   <Icon name="i-heroicons-map-pin" class="w-5 h-5 text-gray-400 mt-1" />
                   <div>
                     <p class="font-medium text-gray-900">{{ event.venue }}</p>
-                    <!-- <p class="text-gray-600">{{ event.address }}</p> -->
+                    <p class="text-gray-600">
+                      <!-- {{ event.address }} -->
+                      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat reiciendis itaque vel vitae
+                      exercitationem
+                      consequuntur nesciunt eum tempore officiis libero?
+                    </p>
                   </div>
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-4">
-                  <!-- <h4 class="font-medium text-gray-900 mb-2">Getting There</h4> -->
+                  <h4 class="font-medium text-gray-900 mb-2">Getting There</h4>
                   <div class="space-y-2 text-sm text-gray-600">
-                    <!-- <p><strong>By Car:</strong> {{ event.directions.car }}</p> -->
-                    <!-- <p><strong>By Public Transport:</strong> {{ event.directions.transport }}</p> -->
-                    <!-- <p><strong>Parking:</strong> {{ event.directions.parking }}</p> -->
+                    <p><strong>By Car:</strong>
+                      <!-- {{ event.directions.car }} -->
+                      Lorem ipsum dolor sit amet.
+                    </p>
+                    <p><strong>By Public Transport:</strong>
+                      <!-- {{ event.directions.transport }} -->
+                      Lorem ipsum dolor sit amet.
+                    </p>
+                    <p><strong>Parking:</strong>
+                      <!-- {{ event.directions.parking }} -->
+                      Lorem ipsum dolor sit amet.
+                    </p>
                   </div>
                 </div>
               </div>
