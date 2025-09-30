@@ -257,6 +257,8 @@
 </template>
 
 <script setup lang="ts">
+import { z } from 'zod';
+
 const route = useRoute();
 const eventId = route.params.id;
 
@@ -282,6 +284,22 @@ const eventId = route.params.id;
 //   }
 // });
 
+// Define validation schema
+const schema = z.object({
+  user_id: z.number().min(1, 'User authentication required'),
+  event_id: z.number().min(1, 'Invalid event'),
+  num_of_tickets: z
+    .number()
+    .min(1, 'At least 1 ticket required')
+    .max(8, 'Maximum 8 tickets per order'),
+  total_ticket_price: z
+    .number()
+    .min(0.01, 'Invalid ticket price')
+});
+
+type BookingSchema = z.output<typeof schema>;
+
+// Load event
 const event = ref<AppEvent>();
 const loadEvent = async () => {
   try {
@@ -293,6 +311,57 @@ const loadEvent = async () => {
     console.log('event loaded...');
   } catch (error) {
     console.error('Failed to fetch event: ', error);
+  }
+};
+
+const toast = useToast();
+
+// Book ticket
+const bookTickets = async () => {
+  try {
+    const payload: BookingSchema = {
+      user_id: 1, // placeholder
+      event_id: Number(eventId),
+      num_of_tickets: ticketQuantity.value,
+      total_ticket_price: Number((ticketQuantity.value * (event.value?.ticket_price ?? 0)).toFixed(2))
+    };
+
+    // validate the data (manual zod)
+    const validated = schema.parse(payload);
+
+    const response = await $fetch('/api/bookings', {
+      method: 'POST',
+      body: validated
+    });
+
+    toast.add({
+      title: 'Success',
+      description: `Successfully booked ${ticketQuantity.value} ticket${ticketQuantity.value > 1 ? 's' : ''}!`,
+      color: 'success'
+    });
+
+    //TODO: refresh to update available tickets
+
+    ticketQuantity.value = 1;
+
+  } catch (error: any) {
+    console.error('Booking failed:', error);
+
+    if (error.name === 'ZodError') {
+      // Handle validation errors
+      toast.add({
+        title: 'Validation Error',
+        description: error.errors[0]?.message || 'Invalid booking data',
+        color: 'error'
+      });
+    } else {
+      // Handle API errors
+      toast.add({
+        title: 'Booking Failed',
+        description: error.data?.message || 'Unable to process booking',
+        color: 'error'
+      });
+    }
   }
 };
 
@@ -320,12 +389,6 @@ const formatDate = (dateString: string) => {
     hour: '2-digit',
     minute: '2-digit'
   });
-};
-
-const bookTickets = () => {
-  // Placeholder for booking logic
-  console.log(`Booking ${ticketQuantity.value} tickets for event ${eventId}`);
-  // Later: handle actual booking process
 };
 
 // Set page meta
