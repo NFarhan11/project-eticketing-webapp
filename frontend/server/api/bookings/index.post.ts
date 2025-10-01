@@ -1,11 +1,12 @@
 export default defineEventHandler(async (event) => {
   const { laravel } = useApi();
 
+  const body = await readBody(event);
+
   try {
-    const body = await readBody(event);
     return laravel("api/bookings", {
       method: "POST",
-      body: body,
+      body,
     });
   } catch (error: any) {
     throw createError({

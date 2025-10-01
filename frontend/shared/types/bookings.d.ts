@@ -1,5 +1,3 @@
-import type { AppEvent } from "./events";
-
 export interface AppBooking {
   id: number;
   user_id: number;
@@ -10,4 +8,3 @@ export interface AppBooking {
   updated_at: string;
   event: AppEvent;
 }
-

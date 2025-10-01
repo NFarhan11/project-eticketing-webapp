@@ -1,8 +1,8 @@
 export default defineEventHandler(async (event) => {
   const { laravel } = useApi();
-  const eventId = getRouterParam(event, "id");
+  const params = { id: getRouterParam(event, "id") };
 
-  if (!eventId) {
+  if (!params.id) {
     throw createError({
       statusCode: 400,
       statusMessage: "No event ID",
@@ -10,7 +10,10 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    return laravel(`api/events/${eventId}`, { method: "GET" });
+    return laravel("api/events", {
+      method: "GET",
+      params,
+    });
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
