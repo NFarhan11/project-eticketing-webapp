@@ -184,11 +184,18 @@
                   <!-- Availability Status -->
                   <div class="text-center">
                     <div class="flex items-center justify-center space-x-2 mb-2">
-                      <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <span class="text-sm font-medium text-green-700">Available</span>
+                      <div class="w-3 h-3 rounded-full" :class="isSoldOut ? 'bg-red-400' : 'bg-green-400'"></div>
+                      <span class="text-sm font-medium" :class="isSoldOut ? 'text-red-700' : 'text-green-700'">
+                        {{ isSoldOut ? 'Sold Out' : 'Available' }}
+                      </span>
                     </div>
-                    <p class="text-sm text-gray-600">
-                      {{ event.available_tickets }} of {{ event.total_tickets }} tickets remaining
+                    <p class="text-sm" :class="isSoldOut ? 'text-red-600 font-semibold' : 'text-gray-600'">
+                      <template v-if="isSoldOut">
+                        All tickets have been sold
+                      </template>
+                      <template v-else>
+                        {{ event.available_tickets }} of {{ event.total_tickets }} tickets remaining
+                      </template>
                     </p>
                   </div>
 
@@ -204,7 +211,8 @@
                   <div class="space-y-3">
                     <label class="block text-sm font-medium text-gray-900">Number of Tickets</label>
                     <div class="flex items-center space-x-3">
-                      <UButton variant="outline" size="sm" @click="decrementTickets" :disabled="ticketQuantity <= 1">
+                      <UButton variant="outline" size="sm" @click="decrementTickets"
+                        :disabled="ticketQuantity <= 1 || isSoldOut">
                         <Icon name="i-heroicons-minus" class="w-4 h-4" />
                       </UButton>
                       <div class="flex-1 text-center">
@@ -232,11 +240,14 @@
                   </div>
 
                   <!-- Book Now Button -->
-                  <UButton size="lg" block
-                    class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                  <UButton size="lg" block :disabled="isSoldOut"
+                    :class="isSoldOut
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105'"
                     @click="bookTickets">
-                    <Icon name="i-heroicons-ticket" class="w-5 h-5 mr-2" />
-                    Book {{ ticketQuantity > 1 ? 'Tickets' : 'Ticket' }} Now
+                    <Icon :name="isSoldOut ? 'i-heroicons-x-circle' : 'i-heroicons-ticket'" class="w-5 h-5 mr-2" />
+                    <span v-if="isSoldOut">Sold Out</span>
+                    <span v-else>Book {{ ticketQuantity > 1 ? 'Tickets' : 'Ticket' }} Now</span>
                   </UButton>
 
                   <!-- Additional Info -->
@@ -257,8 +268,17 @@
 </template>
 
 <script setup lang="ts">
+import { z } from 'zod';
+
 const route = useRoute();
 const eventId = route.params.id;
+
+const ticketQuantity = ref(1);
+
+// Check if event is sold out
+const isSoldOut = computed(() => {
+  return event.value?.available_tickets === 0;
+});
 
 // Mock event data - replace with actual API call later
 // const event = ref({
@@ -282,6 +302,22 @@ const eventId = route.params.id;
 //   }
 // });
 
+// Define validation schema
+const bookingSchema = z.object({
+  user_id: z.number().min(1, 'User authentication required'),
+  event_id: z.number().min(1, 'Invalid event'),
+  num_of_tickets: z
+    .number()
+    .min(1, 'At least 1 ticket required')
+    .max(8, 'Maximum 8 tickets per order'),
+  total_ticket_price: z
+    .number()
+    .min(0.01, 'Invalid ticket price')
+});
+
+type BookingSchema = z.output<typeof bookingSchema>;
+
+// Load event
 const event = ref<AppEvent>();
 const loadEvent = async () => {
   try {
@@ -296,7 +332,57 @@ const loadEvent = async () => {
   }
 };
 
-const ticketQuantity = ref(1);
+const toast = useToast();
+
+// Book ticket
+const bookTickets = async () => {
+  try {
+    const payload: BookingSchema = {
+      user_id: 1, // placeholder
+      event_id: Number(eventId),
+      num_of_tickets: ticketQuantity.value,
+      total_ticket_price: Number((ticketQuantity.value * (event.value?.ticket_price ?? 0)).toFixed(2))
+    };
+
+    // validate the data (manual zod)
+    const validated = bookingSchema.parse(payload);
+
+    const response = await $fetch('/api/bookings', {
+      method: 'POST',
+      body: validated
+    });
+
+    toast.add({
+      title: 'Success',
+      description: `Successfully booked ${ticketQuantity.value} ticket${ticketQuantity.value > 1 ? 's' : ''}!`,
+      color: 'success'
+    });
+
+    // Refresh to update available tickets
+    await loadEvent();
+
+    ticketQuantity.value = 1;
+
+  } catch (error: any) {
+    console.error('Booking failed:', error);
+
+    if (error.name === 'ZodError') {
+      // Handle validation errors
+      toast.add({
+        title: 'Validation Error',
+        description: error.errors[0]?.message || 'Invalid booking data',
+        color: 'error'
+      });
+    } else {
+      // Handle API errors
+      toast.add({
+        title: 'Booking Failed',
+        description: error.data?.message || 'Unable to process booking',
+        color: 'error'
+      });
+    }
+  }
+};
 
 const incrementTickets = () => {
   if (ticketQuantity.value < Math.min(8, event.value?.available_tickets ?? 0)) {
@@ -320,12 +406,6 @@ const formatDate = (dateString: string) => {
     hour: '2-digit',
     minute: '2-digit'
   });
-};
-
-const bookTickets = () => {
-  // Placeholder for booking logic
-  console.log(`Booking ${ticketQuantity.value} tickets for event ${eventId}`);
-  // Later: handle actual booking process
 };
 
 // Set page meta
