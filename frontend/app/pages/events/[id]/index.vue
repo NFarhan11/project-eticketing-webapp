@@ -184,11 +184,18 @@
                   <!-- Availability Status -->
                   <div class="text-center">
                     <div class="flex items-center justify-center space-x-2 mb-2">
-                      <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <span class="text-sm font-medium text-green-700">Available</span>
+                      <div class="w-3 h-3 rounded-full" :class="isSoldOut ? 'bg-red-400' : 'bg-green-400'"></div>
+                      <span class="text-sm font-medium" :class="isSoldOut ? 'text-red-700' : 'text-green-700'">
+                        {{ isSoldOut ? 'Sold Out' : 'Available' }}
+                      </span>
                     </div>
-                    <p class="text-sm text-gray-600">
-                      {{ event.available_tickets }} of {{ event.total_tickets }} tickets remaining
+                    <p class="text-sm" :class="isSoldOut ? 'text-red-600 font-semibold' : 'text-gray-600'">
+                      <template v-if="isSoldOut">
+                        All tickets have been sold
+                      </template>
+                      <template v-else>
+                        {{ event.available_tickets }} of {{ event.total_tickets }} tickets remaining
+                      </template>
                     </p>
                   </div>
 
@@ -204,7 +211,8 @@
                   <div class="space-y-3">
                     <label class="block text-sm font-medium text-gray-900">Number of Tickets</label>
                     <div class="flex items-center space-x-3">
-                      <UButton variant="outline" size="sm" @click="decrementTickets" :disabled="ticketQuantity <= 1">
+                      <UButton variant="outline" size="sm" @click="decrementTickets"
+                        :disabled="ticketQuantity <= 1 || isSoldOut">
                         <Icon name="i-heroicons-minus" class="w-4 h-4" />
                       </UButton>
                       <div class="flex-1 text-center">
@@ -232,11 +240,14 @@
                   </div>
 
                   <!-- Book Now Button -->
-                  <UButton size="lg" block
-                    class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                  <UButton size="lg" block :disabled="isSoldOut"
+                    :class="isSoldOut
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105'"
                     @click="bookTickets">
-                    <Icon name="i-heroicons-ticket" class="w-5 h-5 mr-2" />
-                    Book {{ ticketQuantity > 1 ? 'Tickets' : 'Ticket' }} Now
+                    <Icon :name="isSoldOut ? 'i-heroicons-x-circle' : 'i-heroicons-ticket'" class="w-5 h-5 mr-2" />
+                    <span v-if="isSoldOut">Sold Out</span>
+                    <span v-else>Book {{ ticketQuantity > 1 ? 'Tickets' : 'Ticket' }} Now</span>
                   </UButton>
 
                   <!-- Additional Info -->
@@ -261,6 +272,13 @@ import { z } from 'zod';
 
 const route = useRoute();
 const eventId = route.params.id;
+
+const ticketQuantity = ref(1);
+
+// Check if event is sold out
+const isSoldOut = computed(() => {
+  return event.value?.available_tickets === 0;
+});
 
 // Mock event data - replace with actual API call later
 // const event = ref({
@@ -365,8 +383,6 @@ const bookTickets = async () => {
     }
   }
 };
-
-const ticketQuantity = ref(1);
 
 const incrementTickets = () => {
   if (ticketQuantity.value < Math.min(8, event.value?.available_tickets ?? 0)) {
