@@ -358,10 +358,13 @@ const bookTickets = async () => {
       color: 'success'
     });
 
-    // Refresh to update available tickets
-    await loadEvent();
-
+    // Reset ticket quantity
     ticketQuantity.value = 1;
+
+    // Redirect to bookings page after a short delay
+    setTimeout(() => {
+      navigateTo('/bookings');
+    }, 1500);
 
   } catch (error: any) {
     console.error('Booking failed:', error);

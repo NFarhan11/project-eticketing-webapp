@@ -11,7 +11,18 @@ use Illuminate\Validation\ValidationException;
 class BookingController extends Controller
 {
     public function index(Request $request) {
-        return 'index for bookings';
+        // For now, we'll get all bookings for a specific user
+        // In production, you'd use authenticated user ID
+        $userId = $request->query('user_id', 1);
+        
+        $bookings = Booking::with('event')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return response()->json([
+            'bookings' => $bookings
+        ], 200);
     }
 
     public function store(Request $request)
