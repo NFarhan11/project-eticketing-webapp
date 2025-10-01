@@ -285,7 +285,7 @@ const eventId = route.params.id;
 // });
 
 // Define validation schema
-const schema = z.object({
+const bookingSchema = z.object({
   user_id: z.number().min(1, 'User authentication required'),
   event_id: z.number().min(1, 'Invalid event'),
   num_of_tickets: z
@@ -297,7 +297,7 @@ const schema = z.object({
     .min(0.01, 'Invalid ticket price')
 });
 
-type BookingSchema = z.output<typeof schema>;
+type BookingSchema = z.output<typeof bookingSchema>;
 
 // Load event
 const event = ref<AppEvent>();
@@ -327,7 +327,7 @@ const bookTickets = async () => {
     };
 
     // validate the data (manual zod)
-    const validated = schema.parse(payload);
+    const validated = bookingSchema.parse(payload);
 
     const response = await $fetch('/api/bookings', {
       method: 'POST',
@@ -340,7 +340,8 @@ const bookTickets = async () => {
       color: 'success'
     });
 
-    //TODO: refresh to update available tickets
+    // Refresh to update available tickets
+    await loadEvent();
 
     ticketQuantity.value = 1;
 

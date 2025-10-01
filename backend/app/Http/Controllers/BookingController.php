@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -32,12 +33,28 @@ class BookingController extends Controller
         try {
             DB::beginTransaction();
 
+            // Check ticket availability
+            $event = Event::findOrFail($validated['event_id']);
+            if ($event->available_tickets < $validated['num_of_tickets']) {
+                DB::rollBack();
+                return response()->json([
+                    'message' => 'Not enough tickets available',
+                    'available' => $event->available_tickets,
+                    'requested' => $validated['num_of_tickets']
+                ], 400);
+
+            }
+
+            // Create booking record
             $booking = Booking::create([
                 'user_id' => $validated['user_id'],
                 'event_id' => $validated['event_id'],
                 'num_of_tickets' => $validated['num_of_tickets'],
                 'total_ticket_price' => $validated['total_ticket_price']
             ]);
+
+            // Reduce available ticket count
+            $event->decrement('available_tickets', $validated['num_of_tickets']);
 
             DB::commit();
 
