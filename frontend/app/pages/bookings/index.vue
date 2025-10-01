@@ -7,7 +7,7 @@
           <div class="flex items-center space-x-4">
             <div
               class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
-              <Icon name="i-heroicons-ticket" class="w-6 h-6 text-white" />
+              <UIcon name="i-heroicons-ticket" class="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 class="text-4xl font-bold text-white">My Bookings</h1>
@@ -16,7 +16,7 @@
           </div>
           <UButton to="/events" variant="ghost" size="lg"
             class="text-white border-white/30 hover:bg-white/20 hover:border-white">
-            <Icon name="i-heroicons-arrow-left" class="w-5 h-5 mr-2" />
+            <UIcon name="i-heroicons-arrow-left" class="w-5 h-5 mr-2" />
             Back to Events
           </UButton>
         </div>
@@ -26,7 +26,7 @@
     <!-- Loading State -->
     <div v-if="loading" class="flex items-center justify-center min-h-[400px]">
       <div class="text-center">
-        <Icon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-indigo-600 mx-auto mb-4" />
+        <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-indigo-600 mx-auto mb-4" />
         <p class="text-gray-600">Loading your bookings...</p>
       </div>
     </div>
@@ -39,14 +39,14 @@
           <div class="py-12">
             <div
               class="w-20 h-20 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Icon name="i-heroicons-ticket" class="w-10 h-10 text-gray-500" />
+              <UIcon name="i-heroicons-ticket" class="w-10 h-10 text-gray-500" />
             </div>
             <h3 class="text-2xl font-semibold text-gray-900 mb-3">No Bookings Yet</h3>
             <p class="text-gray-600 mb-8">You haven't made any ticket bookings. Explore our events and book your first
               ticket!</p>
             <UButton to="/events" size="lg"
               class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white">
-              <Icon name="i-heroicons-calendar-days" class="w-5 h-5 mr-2" />
+              <UIcon name="i-heroicons-calendar-days" class="w-5 h-5 mr-2" />
               Browse Events
             </UButton>
           </div>
@@ -61,21 +61,18 @@
             <div class="flex items-center space-x-4">
               <div
                 class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                <Icon name="i-heroicons-check-circle" class="w-6 h-6 text-white" />
+                <UIcon name="i-heroicons-check-circle" class="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 class="text-lg font-semibold text-gray-900">Total Bookings</h3>
                 <p class="text-sm text-gray-600">{{ bookings.length }} {{ bookings.length === 1 ? 'booking' : 'bookings'
-                  }}</p>
+                }}</p>
               </div>
             </div>
             <div class="text-right">
               <p class="text-sm text-gray-600 mb-1">Total Spent</p>
               <p class="text-2xl font-bold text-gray-900">
-                RM{{ totalSpent.toLocaleString('en-MY', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                }) }}
+                RM{{ totalSpent.toFixed(2) }}
               </p>
             </div>
           </div>
@@ -91,7 +88,7 @@
                 <div class="flex-1">
                   <h3 class="text-xl font-bold text-gray-900 mb-2">{{ booking.event.name }}</h3>
                   <div class="flex items-center space-x-2 text-sm text-gray-600">
-                    <Icon name="i-heroicons-calendar-days" class="w-4 h-4" />
+                    <UIcon name="i-heroicons-calendar-days" class="w-4 h-4" />
                     <span>{{ formatDate(booking.event.event_date) }}</span>
                   </div>
                 </div>
@@ -107,7 +104,7 @@
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-1">
                   <div class="flex items-center space-x-2 text-gray-600">
-                    <Icon name="i-heroicons-map-pin" class="w-4 h-4" />
+                    <UIcon name="i-heroicons-map-pin" class="w-4 h-4" />
                     <span class="text-sm font-medium">Venue</span>
                   </div>
                   <p class="text-sm text-gray-900 font-semibold pl-6">{{ booking.event.venue }}</p>
@@ -115,7 +112,7 @@
 
                 <div class="space-y-1">
                   <div class="flex items-center space-x-2 text-gray-600">
-                    <Icon name="i-heroicons-ticket" class="w-4 h-4" />
+                    <UIcon name="i-heroicons-ticket" class="w-4 h-4" />
                     <span class="text-sm font-medium">Tickets</span>
                   </div>
                   <p class="text-sm text-gray-900 font-semibold pl-6">{{ booking.num_of_tickets }} {{
@@ -124,20 +121,17 @@
 
                 <div class="space-y-1">
                   <div class="flex items-center space-x-2 text-gray-600">
-                    <Icon name="i-heroicons-currency-dollar" class="w-4 h-4" />
+                    <UIcon name="i-heroicons-currency-dollar" class="w-4 h-4" />
                     <span class="text-sm font-medium">Total Price</span>
                   </div>
                   <p class="text-sm text-gray-900 font-semibold pl-6">
-                    RM{{ Number(booking.total_ticket_price).toLocaleString('en-MY', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    }) }}
+                    RM{{ Number(booking.total_ticket_price).toFixed(2) }}
                   </p>
                 </div>
 
                 <div class="space-y-1">
                   <div class="flex items-center space-x-2 text-gray-600">
-                    <Icon name="i-heroicons-clock" class="w-4 h-4" />
+                    <UIcon name="i-heroicons-clock" class="w-4 h-4" />
                     <span class="text-sm font-medium">Booked On</span>
                   </div>
                   <p class="text-sm text-gray-900 font-semibold pl-6">{{ formatBookingDate(booking.created_at) }}</p>
@@ -153,7 +147,7 @@
                   Booking ID: #{{ booking.id }}
                 </div>
                 <UButton :to="`/events/${booking.event.id}`" variant="outline" size="sm">
-                  <Icon name="i-heroicons-eye" class="w-4 h-4 mr-2" />
+                  <UIcon name="i-heroicons-eye" class="w-4 h-4 mr-2" />
                   View Event
                 </UButton>
               </div>
@@ -166,7 +160,6 @@
 </template>
 
 <script setup lang="ts">
-import type { AppBooking } from '~/shared/types/bookings';
 
 definePageMeta({
   layout: "default",
@@ -175,13 +168,6 @@ definePageMeta({
 const bookings = ref<AppBooking[]>([]);
 const loading = ref(true);
 
-// Computed total spent
-const totalSpent = computed(() => {
-  return bookings.value.reduce((sum, booking) => {
-    return sum + Number(booking.total_ticket_price);
-  }, 0);
-});
-
 // Load bookings
 const loadBookings = async () => {
   loading.value = true;
@@ -189,7 +175,7 @@ const loadBookings = async () => {
     const response = await $fetch('/api/bookings', {
       method: 'GET',
       query: {
-        user_id: 1 // Placeholder - in production, use authenticated user ID
+        user_id: 1 // TODO: authentication
       }
     });
 
@@ -201,6 +187,15 @@ const loadBookings = async () => {
     loading.value = false;
   }
 };
+
+// Computed total spent
+const totalSpent = computed(() => {
+  let sum = 0;
+  bookings.value.forEach(booking => {
+    sum += Number(booking.total_ticket_price);
+  });
+  return sum;
+});
 
 // Format event date
 const formatDate = (dateString: string) => {

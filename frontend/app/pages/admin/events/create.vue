@@ -54,7 +54,7 @@
           <div class="flex items-center space-x-3">
             <div
               class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <Icon name="i-heroicons-calendar-days" class="w-5 h-5 text-white" />
+              <UIcon name="i-heroicons-calendar-days" class="w-5 h-5 text-white" />
             </div>
             <div>
               <h2 class="text-lg font-semibold text-gray-900">Event Information</h2>
@@ -67,7 +67,7 @@
           <!-- Event Name Section -->
           <div class="space-y-4">
             <div class="flex items-center space-x-2">
-              <Icon name="i-heroicons-tag" class="w-5 h-5 text-gray-400" />
+              <UIcon name="i-heroicons-tag" class="w-5 h-5 text-gray-400" />
               <UFormField label="Event Name" name="name" />
               <span class="text-red-500">*</span>
             </div>
@@ -80,7 +80,7 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="space-y-4">
               <div class="flex items-center space-x-2">
-                <Icon name="i-heroicons-calendar" class="w-5 h-5 text-gray-400" />
+                <UIcon name="i-heroicons-calendar" class="w-5 h-5 text-gray-400" />
                 <UFormField label="Event Date" name="date" />
                 <span class="text-red-500">*</span>
               </div>
@@ -91,7 +91,7 @@
 
             <div class="space-y-4">
               <div class="flex items-center space-x-2">
-                <Icon name="i-heroicons-map-pin" class="w-5 h-5 text-gray-400" />
+                <UIcon name="i-heroicons-map-pin" class="w-5 h-5 text-gray-400" />
                 <UFormField label="Venue" name="venue" />
                 <span class="text-red-500">*</span>
               </div>
@@ -104,28 +104,28 @@
           <!-- Tickets and Pricing Section -->
           <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
             <div class="flex items-center space-x-2 mb-6">
-              <Icon name="i-heroicons-ticket" class="w-5 h-5 text-blue-600" />
+              <UIcon name="i-heroicons-ticket" class="w-5 h-5 text-blue-600" />
               <h3 class="text-lg font-semibold text-gray-900">Ticketing Details</h3>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div class="space-y-4">
                 <div class="flex items-center space-x-2">
-                  <Icon name="i-heroicons-users" class="w-4 h-4 text-gray-400" />
+                  <UIcon name="i-heroicons-users" class="w-4 h-4 text-gray-400" />
                   <UFormField label="Total Tickets" name="totalTickets" />
                   <span class="text-red-500">*</span>
                 </div>
                 <UInput v-model="state.totalTickets" type="number" placeholder="e.g., 500" size="lg"
                   class="transition-all duration-200 focus-within:scale-[1.02]" />
                 <div class="flex items-center space-x-2">
-                  <Icon name="i-heroicons-information-circle" class="w-4 h-4 text-blue-500" />
+                  <UIcon name="i-heroicons-information-circle" class="w-4 h-4 text-blue-500" />
                   <p class="text-xs text-blue-600">Maximum capacity for your event</p>
                 </div>
               </div>
 
               <div class="space-y-4">
                 <div class="flex items-center space-x-2">
-                  <Icon name="i-heroicons-currency-dollar" class="w-4 h-4 text-gray-400" />
+                  <UIcon name="i-heroicons-currency-dollar" class="w-4 h-4 text-gray-400" />
                   <UFormField label="Ticket Price" name="ticketPrice" />
                   <span class="text-red-500">*</span>
                 </div>
@@ -135,7 +135,7 @@
                   <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">RM</span>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <Icon name="i-heroicons-information-circle" class="w-4 h-4 text-green-500" />
+                  <UIcon name="i-heroicons-information-circle" class="w-4 h-4 text-green-500" />
                   <p class="text-xs text-green-600">Price per ticket in RM</p>
                 </div>
               </div>
@@ -146,15 +146,12 @@
           <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <Icon name="i-heroicons-chart-bar" class="w-5 h-5 text-gray-600" />
+                <UIcon name="i-heroicons-chart-bar" class="w-5 h-5 text-gray-600" />
                 <span class="text-sm font-medium text-gray-900">Potential Revenue</span>
               </div>
               <div class="text-right">
                 <div class="text-2xl font-bold text-green-600">
-                  RM{{ (state.totalTickets * state.ticketPrice).toLocaleString('en-MY', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  }) }}
+                  RM{{ (state.totalTickets * state.ticketPrice).toFixed(2) }}
                 </div>
                 <div class="text-xs text-gray-500">
                   {{ state.totalTickets }} tickets × RM{{ state.ticketPrice }}
@@ -169,12 +166,12 @@
             <div class="flex items-center space-x-3">
               <UButton to="/admin/events" variant="ghost" size="lg"
                 class="text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200">
-                <Icon name="i-heroicons-x-mark" class="w-4 h-4 mr-2" />
+                <UIcon name="i-heroicons-x-mark" class="w-4 h-4 mr-2" />
                 Cancel
               </UButton>
               <UButton type="submit" size="lg"
                 class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 cursor-pointer">
-                <Icon name="i-heroicons-plus-circle" class="w-4 h-4 mr-2" />
+                <UIcon name="i-heroicons-plus-circle" class="w-4 h-4 mr-2" />
                 Create Event
               </UButton>
             </div>

@@ -6,7 +6,7 @@
         <div class="flex items-center space-x-4">
           <div
             class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
-            <Icon name="i-heroicons-ticket" class="w-6 h-6 text-white" />
+            <UIcon name="i-heroicons-ticket" class="w-6 h-6 text-white" />
           </div>
           <div>
             <h1 class="text-4xl font-bold text-white">Browse Events</h1>
@@ -24,7 +24,7 @@
           <div class="flex items-center space-x-3">
             <div
               class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Icon name="i-heroicons-calendar-days" class="w-4 h-4 text-white" />
+              <UIcon name="i-heroicons-calendar-days" class="w-4 h-4 text-white" />
             </div>
             <div>
               <h2 class="text-xl font-semibold text-gray-900">Available Events</h2>
@@ -39,31 +39,31 @@
               <tr>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-musical-note" class="w-4 h-4 text-blue-600" />
+                    <UIcon name="i-heroicons-musical-note" class="w-4 h-4 text-blue-600" />
                     <span>Event</span>
                   </div>
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-calendar-days" class="w-4 h-4 text-green-600" />
+                    <UIcon name="i-heroicons-calendar-days" class="w-4 h-4 text-green-600" />
                     <span>Date</span>
                   </div>
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-map-pin" class="w-4 h-4 text-purple-600" />
+                    <UIcon name="i-heroicons-map-pin" class="w-4 h-4 text-purple-600" />
                     <span>Venue</span>
                   </div>
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-ticket" class="w-4 h-4 text-indigo-600" />
+                    <UIcon name="i-heroicons-ticket" class="w-4 h-4 text-indigo-600" />
                     <span>Availability</span>
                   </div>
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-currency-dollar" class="w-4 h-4 text-orange-600" />
+                    <UIcon name="i-heroicons-currency-dollar" class="w-4 h-4 text-orange-600" />
                     <span>Price</span>
                   </div>
                 </th>
@@ -77,7 +77,7 @@
                   <div class="flex items-center space-x-3">
                     <div
                       class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
-                      <Icon name="i-heroicons-calendar-days" class="w-5 h-5 text-white" />
+                      <UIcon name="i-heroicons-calendar-days" class="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <div class="text-base font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
@@ -89,7 +89,7 @@
                 </td>
                 <td class="px-6 py-5">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-clock"
+                    <UIcon name="i-heroicons-clock"
                       class="w-4 h-4 text-gray-400 group-hover:text-green-500 transition-colors" />
                     <div class="text-sm font-medium text-gray-900 group-hover:text-green-700 transition-colors">
                       {{ formatDate(event.event_date) }}
@@ -98,7 +98,7 @@
                 </td>
                 <td class="px-6 py-5">
                   <div class="flex items-center space-x-2">
-                    <Icon name="i-heroicons-building-office-2"
+                    <UIcon name="i-heroicons-building-office-2"
                       class="w-4 h-4 text-gray-400 group-hover:text-purple-500 transition-colors" />
                     <div class="text-sm font-medium text-gray-900 group-hover:text-purple-700 transition-colors">
                       {{ event.venue }}

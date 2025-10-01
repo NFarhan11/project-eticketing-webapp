@@ -11,9 +11,8 @@ use Illuminate\Validation\ValidationException;
 class BookingController extends Controller
 {
     public function index(Request $request) {
-        // For now, we'll get all bookings for a specific user
-        // In production, you'd use authenticated user ID
-        $userId = $request->query('user_id', 1);
+
+        $userId = $request->input('user_id');
         
         $bookings = Booking::with('event')
             ->where('user_id', $userId)
@@ -71,7 +70,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'message' => 'Booking created successfully',
-                'event' => $booking
+                'booking' => $booking
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
