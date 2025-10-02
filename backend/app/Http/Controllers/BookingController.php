@@ -81,4 +81,33 @@ class BookingController extends Controller
             ], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $booking = Booking::findOrFail($id);
+
+            // Return tickets to event
+            $event = Event::findOrFail($booking->event_id);
+            $event->increment('available_tickets', $booking->num_of_tickets);
+
+            // Delete booking
+            $booking->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Booking deleted successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Failed to delete booking',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -66,7 +66,7 @@
               <div>
                 <h3 class="text-lg font-semibold text-gray-900">Total Bookings</h3>
                 <p class="text-sm text-gray-600">{{ bookings.length }} {{ bookings.length === 1 ? 'booking' : 'bookings'
-                }}</p>
+                  }}</p>
               </div>
             </div>
             <div class="text-right">
@@ -146,16 +146,38 @@
                 <div class="text-xs text-gray-500">
                   Booking ID: #{{ booking.id }}
                 </div>
-                <UButton :to="`/events/${booking.event.id}`" variant="outline" size="sm">
-                  <UIcon name="i-heroicons-eye" class="w-4 h-4 mr-2" />
-                  View Event
-                </UButton>
+                <div class="flex items-center space-x-2">
+                  <UButton :to="`/events/${booking.event.id}`" variant="outline" size="sm">
+                    <UIcon name="i-heroicons-eye" class="w-4 h-4 mr-2" />
+                    View Event
+                  </UButton>
+                  <UButton @click="bookingId = booking.id; isOpen = true" label="Cancel" color="error" variant="outline"
+                    size="sm" icon="i-heroicons-x-mark" />
+                </div>
               </div>
             </div>
           </UCard>
         </div>
       </div>
     </div>
+    <!-- Cancel Booking Modal -->
+    <UModal v-model:open="isOpen" title="Cancel Booking"
+      description="Are you sure you want to cancel this booking? This action cannot be undone.">
+      <template #body>
+        <div class="bg-red-50 border border-red-100 rounded-lg p-4">
+          <div class="flex items-start space-x-3">
+            <UIcon name="i-heroicons-exclamation-triangle" class="w-10 h-10 text-red-600" />
+            <div>
+              <p class="text-gray-600">Are you sure you want to cancel this booking?</p>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <UButton label="Keep Booking" variant="outline" @click="isOpen = false" />
+        <UButton label="Cancel Booking" color="error" @click="deleteBooking" :loading="loading" />
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -165,8 +187,10 @@ definePageMeta({
   layout: "default",
 });
 
+const isOpen = ref<boolean>(false)
 const bookings = ref<AppBooking[]>([]);
-const loading = ref(true);
+const loading = ref<boolean>(true);
+const bookingId = ref<number | null>(null);
 
 // Load bookings
 const loadBookings = async () => {
@@ -216,6 +240,31 @@ const formatBookingDate = (dateString: string) => {
     month: 'short',
     day: 'numeric'
   });
+};
+
+// Cancel booking
+const deleteBooking = async () => {
+  if (!bookingId.value) return;
+
+  loading.value = true;
+  try {
+    await $fetch(`/api/bookings/${bookingId.value}`, {
+      method: 'DELETE'
+    });
+
+    // Remove booking from list
+    bookings.value = bookings.value.filter(b => b.id !== bookingId.value);
+
+    // Close modal
+    isOpen.value = false;
+    bookingId.value = null;
+
+    console.log('Booking cancelled successfully');
+  } catch (error) {
+    console.error('Failed to cancel booking:', error);
+  } finally {
+    loading.value = false;
+  }
 };
 
 onMounted(async () => {
