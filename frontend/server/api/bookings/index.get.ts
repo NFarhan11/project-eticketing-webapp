@@ -1,17 +1,17 @@
 export default defineEventHandler(async (event) => {
   const { laravel } = useApi();
 
-  const body = await readBody(event);
+  const query = getQuery(event);
 
   try {
-    return laravel("api/events", {
-      method: "POST",
-      body,
+    return laravel("api/bookings", {
+      method: "GET",
+      query,
     });
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      statusMessage: error.message || "Failed to submit events",
+      statusMessage: error.message || "Failed to fetch bookings",
     });
   }
 });

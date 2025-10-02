@@ -3,7 +3,7 @@
     <!-- Loading State -->
     <div v-if="!event" class="flex items-center justify-center min-h-screen">
       <div class="text-center">
-        <Icon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
+        <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
         <p class="text-gray-600">Loading event details...</p>
       </div>
     </div>
@@ -17,22 +17,22 @@
             <div class="flex items-center space-x-2 mb-4">
               <UButton to="/events" variant="ghost" size="sm"
                 class="text-white border-white/30 hover:bg-white/20 hover:border-white">
-                <Icon name="i-heroicons-arrow-left" class="w-4 h-4 mr-2" />
+                <UIcon name="i-heroicons-arrow-left" class="w-4 h-4 mr-2" />
                 Back to Events
               </UButton>
             </div>
             <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ event.name }}</h1>
             <div class="flex flex-wrap items-center space-x-6 text-lg">
               <div class="flex items-center space-x-2">
-                <Icon name="i-heroicons-calendar-days" class="w-5 h-5" />
+                <UIcon name="i-heroicons-calendar-days" class="w-5 h-5" />
                 <span>{{ formatDate(event.event_date) }}</span>
               </div>
               <div class="flex items-center space-x-2">
-                <Icon name="i-heroicons-map-pin" class="w-5 h-5" />
+                <UIcon name="i-heroicons-map-pin" class="w-5 h-5" />
                 <span>{{ event.venue }}</span>
               </div>
               <div class="flex items-center space-x-2">
-                <Icon name="i-heroicons-ticket" class="w-5 h-5" />
+                <UIcon name="i-heroicons-ticket" class="w-5 h-5" />
                 <span>{{ event.available_tickets }} / {{ event.total_tickets }} available</span>
               </div>
             </div>
@@ -51,7 +51,7 @@
                 <div class="flex items-center space-x-3">
                   <div
                     class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <Icon name="i-heroicons-information-circle" class="w-5 h-5 text-white" />
+                    <UIcon name="i-heroicons-information-circle" class="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <h2 class="text-xl font-semibold text-gray-900">About This Event</h2>
@@ -69,7 +69,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 not-prose">
                   <div class="bg-blue-50 rounded-lg p-4">
                     <div class="flex items-center space-x-2 mb-2">
-                      <Icon name="i-heroicons-clock" class="w-5 h-5 text-blue-600" />
+                      <UIcon name="i-heroicons-clock" class="w-5 h-5 text-blue-600" />
                       <span class="font-medium text-gray-900">Event Duration</span>
                     </div>
                     <p class="text-gray-600">
@@ -79,7 +79,7 @@
 
                   <div class="bg-green-50 rounded-lg p-4">
                     <div class="flex items-center space-x-2 mb-2">
-                      <Icon name="i-heroicons-users" class="w-5 h-5 text-green-600" />
+                      <UIcon name="i-heroicons-users" class="w-5 h-5 text-green-600" />
                       <span class="font-medium text-gray-900">Age Requirement</span>
                     </div>
                     <p class="text-gray-600">
@@ -90,7 +90,7 @@
 
                   <div class="bg-purple-50 rounded-lg p-4">
                     <div class="flex items-center space-x-2 mb-2">
-                      <Icon name="i-heroicons-musical-note" class="w-5 h-5 text-purple-600" />
+                      <UIcon name="i-heroicons-musical-note" class="w-5 h-5 text-purple-600" />
                       <span class="font-medium text-gray-900">Genre</span>
                     </div>
                     <p class="text-gray-600">
@@ -102,7 +102,7 @@
 
                   <div class="bg-orange-50 rounded-lg p-4">
                     <div class="flex items-center space-x-2 mb-2">
-                      <Icon name="i-heroicons-building-storefront" class="w-5 h-5 text-orange-600" />
+                      <UIcon name="i-heroicons-building-storefront" class="w-5 h-5 text-orange-600" />
                       <span class="font-medium text-gray-900">Organizer</span>
                     </div>
                     <p class="text-gray-600">
@@ -120,7 +120,7 @@
                 <div class="flex items-center space-x-3">
                   <div
                     class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                    <Icon name="i-heroicons-building-office-2" class="w-5 h-5 text-white" />
+                    <UIcon name="i-heroicons-building-office-2" class="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <h2 class="text-xl font-semibold text-gray-900">Venue Information</h2>
@@ -131,7 +131,7 @@
 
               <div class="space-y-4">
                 <div class="flex items-start space-x-3">
-                  <Icon name="i-heroicons-map-pin" class="w-5 h-5 text-gray-400 mt-1" />
+                  <UIcon name="i-heroicons-map-pin" class="w-5 h-5 text-gray-400 mt-1" />
                   <div>
                     <p class="font-medium text-gray-900">{{ event.venue }}</p>
                     <p class="text-gray-600">
@@ -171,10 +171,7 @@
                 <template #header>
                   <div class="text-center">
                     <div class="text-3xl font-bold text-gray-900 mb-2">
-                      RM{{ event.ticket_price.toLocaleString('en-MY', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      }) }}
+                      RM{{ Number(event.ticket_price).toFixed(2) }}
                     </div>
                     <p class="text-sm text-gray-600">per ticket</p>
                   </div>
@@ -213,14 +210,14 @@
                     <div class="flex items-center space-x-3">
                       <UButton variant="outline" size="sm" @click="decrementTickets"
                         :disabled="ticketQuantity <= 1 || isSoldOut">
-                        <Icon name="i-heroicons-minus" class="w-4 h-4" />
+                        <UIcon name="i-heroicons-minus" class="w-4 h-4" />
                       </UButton>
                       <div class="flex-1 text-center">
                         <span class="text-xl font-semibold">{{ ticketQuantity }}</span>
                       </div>
                       <UButton variant="outline" size="sm" @click="incrementTickets"
                         :disabled="ticketQuantity >= Math.min(8, event.available_tickets)">
-                        <Icon name="i-heroicons-plus" class="w-4 h-4" />
+                        <UIcon name="i-heroicons-plus" class="w-4 h-4" />
                       </UButton>
                     </div>
                     <p class="text-xs text-gray-500 text-center">Maximum 8 tickets per order</p>
@@ -229,12 +226,11 @@
                   <!-- Total Price -->
                   <div class="bg-gray-50 rounded-lg p-4">
                     <div class="flex justify-between items-center mb-2">
-                      <span class="text-sm text-gray-600">{{ ticketQuantity }} × RM{{ event.ticket_price }}</span>
+                      <span class="text-sm text-gray-600">{{ ticketQuantity }} × RM{{
+                        Number(event.ticket_price).toFixed(2)
+                      }}</span>
                       <span class="text-lg font-semibold text-gray-900">
-                        RM{{ (ticketQuantity * event.ticket_price).toLocaleString('en-MY', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        }) }}
+                        RM{{ (ticketQuantity * Number(event.ticket_price)).toFixed(2) }}
                       </span>
                     </div>
                   </div>
@@ -245,7 +241,7 @@
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105'"
                     @click="bookTickets">
-                    <Icon :name="isSoldOut ? 'i-heroicons-x-circle' : 'i-heroicons-ticket'" class="w-5 h-5 mr-2" />
+                    <UIcon :name="isSoldOut ? 'i-heroicons-x-circle' : 'i-heroicons-ticket'" class="w-5 h-5 mr-2" />
                     <span v-if="isSoldOut">Sold Out</span>
                     <span v-else>Book {{ ticketQuantity > 1 ? 'Tickets' : 'Ticket' }} Now</span>
                   </UButton>
@@ -358,10 +354,13 @@ const bookTickets = async () => {
       color: 'success'
     });
 
-    // Refresh to update available tickets
-    await loadEvent();
-
+    // Reset ticket quantity
     ticketQuantity.value = 1;
+
+    // Redirect to bookings page after a short delay
+    setTimeout(() => {
+      navigateTo('/bookings');
+    }, 1500);
 
   } catch (error: any) {
     console.error('Booking failed:', error);

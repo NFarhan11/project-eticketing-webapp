@@ -11,7 +11,17 @@ use Illuminate\Validation\ValidationException;
 class BookingController extends Controller
 {
     public function index(Request $request) {
-        return 'index for bookings';
+
+        $userId = $request->input('user_id');
+        
+        $bookings = Booking::with('event')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return response()->json([
+            'bookings' => $bookings
+        ], 200);
     }
 
     public function store(Request $request)
@@ -60,13 +70,42 @@ class BookingController extends Controller
 
             return response()->json([
                 'message' => 'Booking created successfully',
-                'event' => $booking
+                'booking' => $booking
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
 
             return response()->json([
                 'message' => 'Failed to create booking',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $booking = Booking::findOrFail($id);
+
+            // Return tickets to event
+            $event = Event::findOrFail($booking->event_id);
+            $event->increment('available_tickets', $booking->num_of_tickets);
+
+            // Delete booking
+            $booking->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Booking deleted successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Failed to delete booking',
                 'error' => $e->getMessage()
             ], 500);
         }
