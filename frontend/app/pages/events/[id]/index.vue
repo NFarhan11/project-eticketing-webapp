@@ -171,7 +171,7 @@
                 <template #header>
                   <div class="text-center">
                     <div class="text-3xl font-bold text-gray-900 mb-2">
-                      RM{{ event.ticket_price.toFixed(2) }}
+                      RM{{ Number(event.ticket_price).toFixed(2) }}
                     </div>
                     <p class="text-sm text-gray-600">per ticket</p>
                   </div>
@@ -226,9 +226,11 @@
                   <!-- Total Price -->
                   <div class="bg-gray-50 rounded-lg p-4">
                     <div class="flex justify-between items-center mb-2">
-                      <span class="text-sm text-gray-600">{{ ticketQuantity }} × RM{{ event.ticket_price }}</span>
+                      <span class="text-sm text-gray-600">{{ ticketQuantity }} × RM{{
+                        Number(event.ticket_price).toFixed(2)
+                      }}</span>
                       <span class="text-lg font-semibold text-gray-900">
-                        RM{{ (ticketQuantity * event.ticket_price).toFixed(2) }}
+                        RM{{ (ticketQuantity * Number(event.ticket_price)).toFixed(2) }}
                       </span>
                     </div>
                   </div>
