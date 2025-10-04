@@ -57,7 +57,7 @@
                   <span>Email Address</span>
                 </div>
               </label>
-              <input id="email" v-model="form.email" type="email" required placeholder="you@example.com"
+              <input id="email" v-model="formData.email" type="email" required placeholder="you@example.com"
                 class="block w-full px-4 py-3.5 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
                 :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': error }" />
             </div>
@@ -75,7 +75,8 @@
                   </NuxtLink>
                 </div>
               </label>
-              <input id="password" v-model="form.password" type="password" required placeholder="Enter your password"
+              <input id="password" v-model="formData.password" type="password" required
+                placeholder="Enter your password"
                 class="block w-full px-4 py-3.5 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
                 :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': error }" />
             </div>
@@ -133,8 +134,10 @@ import { z } from 'zod';
 
 definePageMeta({
   layout: false, // Use no layout for auth pages
-  // middleware: 'guest', // Uncomment when implementing auth
+  middleware: 'guest', // Uncomment when implementing auth
 });
+
+const { login } = useAuth(); // Add this line
 
 // Setup schema
 const loginSchema = z.object({
@@ -146,7 +149,7 @@ const loginSchema = z.object({
 
 type LoginSchema = z.infer<typeof loginSchema>;
 
-const form = reactive<LoginSchema>({
+const formData = reactive<LoginSchema>({
   email: '',
   password: '',
 });
@@ -159,25 +162,30 @@ const handleLogin = async () => {
   error.value = '';
 
   try {
-    // TODO: Implement actual login logic with useAuth composable
-    // const { login } = useAuth();
-    // await login(form.email, form.password);
+    // Validate form data
+    const validatedData = loginSchema.parse(formData);
 
-    // Mock login - replace with actual implementation
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Attempt login
+    await login(validatedData.email, validatedData.password);
 
-    // Simulate validation
-    if (!form.email || !form.password) {
-      throw new Error('Please fill in all fields');
-    }
+    console.log("Login successful");
 
-    // Mock success - redirect to events
-    // navigateTo('/events');
-
-    console.log('Login attempt:', { email: form.email });
+    // Redirect to events page on success
+    await navigateTo('/events');
 
   } catch (err: any) {
-    error.value = err.message || err.data?.message || 'Login failed. Please check your credentials.';
+    console.log("Login failed:", err.message || err.data?.message || 'Unknown error');
+
+    if (err.errors) {
+      // Zod validation errors
+      error.value = err.errors[0].message;
+    } else if (err.data?.message) {
+      // API error message
+      error.value = err.data.message;
+    } else {
+      // Generic error
+      error.value = err.message || 'Login failed. Please check your credentials.';
+    }
   } finally {
     loading.value = false;
   }

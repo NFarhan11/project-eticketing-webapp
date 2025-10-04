@@ -99,6 +99,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'jwt_secret' => env('JWT_SECRET', 'default-secret-key'),
+
     'previous_keys' => [
         ...array_filter(
             explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
